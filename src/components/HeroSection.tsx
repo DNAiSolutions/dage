@@ -3,27 +3,24 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 
-// Arc gallery images
+// Arc gallery images (5 images in 2-tier layout)
 import arc1 from "@/assets/arc-1.jpg";
 import arc2 from "@/assets/arc-2.jpg";
 import arc3 from "@/assets/arc-3.jpg";
 import arc4 from "@/assets/arc-4.jpg";
 import arc5 from "@/assets/arc-5.jpg";
-import arc6 from "@/assets/arc-6.jpg";
-import arc7 from "@/assets/arc-7.jpg";
-import arc8 from "@/assets/arc-8.jpg";
 import panoramaImage from "@/assets/panorama-hero.jpg";
 
-// Arc image configuration - positioned to create curved arc effect
+// Arc image configuration - 2-tier layout matching wireframe
+// Bottom row: 2 images on far edges | Top row: 3 images clustered center-right
 const arcImages = [
-  { src: arc1, rotation: -32, x: -48, y: 40, scale: 0.85, zIndex: 1 },
-  { src: arc2, rotation: -22, x: -32, y: 15, scale: 0.92, zIndex: 2 },
-  { src: arc3, rotation: -12, x: -16, y: -5, scale: 0.98, zIndex: 3 },
-  { src: arc4, rotation: -4, x: -2, y: -15, scale: 1.02, zIndex: 4 },
-  { src: arc5, rotation: 4, x: 12, y: -15, scale: 1.02, zIndex: 4 },
-  { src: arc6, rotation: 12, x: 26, y: -5, scale: 0.98, zIndex: 3 },
-  { src: arc7, rotation: 22, x: 42, y: 15, scale: 0.92, zIndex: 2 },
-  { src: arc8, rotation: 32, x: 58, y: 40, scale: 0.85, zIndex: 1 },
+  // Bottom row - far edges, lower position
+  { src: arc1, rotation: -12, x: -30, y: 50, scale: 0.88, zIndex: 1 },
+  { src: arc5, rotation: 12, x: 70, y: 50, scale: 0.88, zIndex: 1 },
+  // Top row - clustered center-right, higher position
+  { src: arc2, rotation: -6, x: 20, y: 0, scale: 0.94, zIndex: 2 },
+  { src: arc3, rotation: 0, x: 38, y: -12, scale: 1.0, zIndex: 3 },
+  { src: arc4, rotation: 6, x: 56, y: 0, scale: 0.94, zIndex: 2 },
 ];
 
 const HeroSection = () => {
@@ -68,10 +65,10 @@ const HeroSection = () => {
           <span className="block text-gold">Community</span>
         </motion.h1>
 
-        {/* Layer 2: Arc Image Gallery */}
+        {/* Layer 2: Arc Image Gallery - 2-tier layout */}
         <motion.div
           style={{ y: arcY, x: arcX }}
-          className="arc-container absolute inset-x-0 top-[45%] md:top-[50%] flex justify-center items-center h-48 md:h-64 lg:h-80 z-20"
+          className="arc-container absolute inset-x-0 top-[42%] md:top-[45%] flex justify-center items-center h-72 md:h-96 lg:h-[28rem] z-20"
         >
           <div className="relative w-full max-w-6xl mx-auto h-full">
             {arcImages.map((img, index) => (
@@ -80,10 +77,10 @@ const HeroSection = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.08 }}
-                className="arc-image absolute w-28 sm:w-36 md:w-44 lg:w-52 aspect-square rounded-lg overflow-hidden shadow-elevated"
+                className="arc-image absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated"
                 style={{
-                  left: `${img.x + 50}%`,
-                  top: `${img.y + 50}%`,
+                  left: `${img.x + 15}%`,
+                  top: `${img.y + 45}%`,
                   transform: `translate(-50%, -50%) rotate(${img.rotation}deg) scale(${img.scale})`,
                   zIndex: img.zIndex,
                 }}
@@ -98,9 +95,9 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        {/* Layer 3: Rotating CTA Circle */}
+        {/* Layer 3: Rotating CTA Circle - positioned to overlap panorama */}
         <motion.div
-          className="absolute bottom-24 md:bottom-32 left-1/2 -translate-x-1/2 z-40"
+          className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-40"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
