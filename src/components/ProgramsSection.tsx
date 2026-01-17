@@ -65,7 +65,7 @@ const ProgramsSection = () => {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-1.5 bg-gold/10 text-gold font-semibold text-sm rounded-full mb-4">
-            Our Programs
+            How We Serve
           </span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
             Building Community,{" "}
