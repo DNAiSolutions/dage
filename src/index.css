@@ -228,47 +228,19 @@
     }
   }
 
-  /* Continuous carousel scroll animation */
-  .animate-carousel-scroll {
-    animation: carouselScroll 28s linear infinite;
-    transform: translate(-50%, -50%);
+  /* Arc carousel entering animation */
+  .animate-slide-up-fade-in {
+    animation: slideUpFadeIn 700ms ease-in-out forwards;
   }
 
-  @keyframes carouselScroll {
-    0% {
-      left: -10%;
-      top: 100%;
+  @keyframes slideUpFadeIn {
+    from {
+      top: 120%;
       opacity: 0;
     }
-    8% {
-      left: 10%;
+    to {
       top: 88%;
       opacity: 1;
-    }
-    28% {
-      left: 30%;
-      top: 66%;
-      opacity: 1;
-    }
-    50% {
-      left: 50%;
-      top: 58%;
-      opacity: 1;
-    }
-    72% {
-      left: 70%;
-      top: 66%;
-      opacity: 1;
-    }
-    92% {
-      left: 90%;
-      top: 88%;
-      opacity: 1;
-    }
-    100% {
-      left: 110%;
-      top: 100%;
-      opacity: 0;
     }
   }
 }

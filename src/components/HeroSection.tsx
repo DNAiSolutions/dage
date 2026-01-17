@@ -3,9 +3,10 @@
  * ================================================
  * 
  * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
- *    - Images animate along arc path via CSS (continuous scroll)
- *    - Path: left edge → arc peak at center → right edge
- *    - Total loop: 28s with 7 images staggered 4s apart
+ *    - Y positions: 58% (center), 66% (inner), 88% (edges)
+ *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
+ *    - Images positioned with z-20, headline has z-30
+ *    - CAROUSEL: Images rotate through positions every 4.5s
  * 
  * 2. ROTATING CTA CIRCLE: Must overlap video section by half
  *    - Position: -bottom-14 md:-bottom-18 lg:-bottom-20
@@ -20,6 +21,7 @@
  * These constraints apply regardless of headline text changes.
  */
 
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
@@ -31,10 +33,49 @@ import carousel5 from "@/assets/carousel-5.png";
 import carousel6 from "@/assets/carousel-6.png";
 import carousel7 from "@/assets/carousel-7.png";
 
-// All available images for continuous scroll
+// All available images for rotation
 const allImages = [carousel1, carousel2, carousel3, carousel4, carousel5, carousel6, carousel7];
 
+// Fixed arc positions (images rotate through these)
+const arcPositions = [
+  { x: '10%', y: '88%', zIndex: 1 },   // position 0 (left edge)
+  { x: '30%', y: '66%', zIndex: 2 },   // position 1 (inner left)
+  { x: '50%', y: '58%', zIndex: 3 },   // position 2 (center)
+  { x: '70%', y: '66%', zIndex: 2 },   // position 3 (inner right)
+  { x: '90%', y: '88%', zIndex: 1 },   // position 4 (right edge)
+];
+
 const HeroSection = () => {
+  // Track which 5 images are currently visible (indices into allImages)
+  const [visibleIndices, setVisibleIndices] = useState([0, 1, 2, 3, 4]);
+  const [exitingImage, setExitingImage] = useState<{ src: string; position: typeof arcPositions[0] } | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleIndices(prev => {
+        // Get next image index (wraps around)
+        const lastVisibleIndex = prev[prev.length - 1];
+        const nextIndex = (lastVisibleIndex + 1) % allImages.length;
+        
+        // Set exiting image (rightmost) - animates down and fades out
+        setExitingImage({
+          src: allImages[prev[4]],
+          position: arcPositions[4]
+        });
+        
+        // Clear exit animation after it completes
+        setTimeout(() => {
+          setExitingImage(null);
+        }, 700);
+        
+        // Shift all indices: remove first, add next at end
+        return [...prev.slice(1), nextIndex];
+      });
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-[120vh] bg-background overflow-visible">
       
@@ -55,24 +96,51 @@ const HeroSection = () => {
         
       </div>
 
-      {/* Arc Images Container - Continuous scroll animation */}
+      {/* Arc Images Container - z-40 to appear above video */}
       <div className="absolute inset-0 z-40 pointer-events-none">
         <div className="relative w-full h-full max-w-7xl mx-auto">
-          {allImages.map((img, index) => (
+          {/* Visible images in arc positions */}
+          {visibleIndices.map((imgIndex, posIndex) => {
+            const pos = arcPositions[posIndex];
+            return (
+              <div
+                key={`${imgIndex}-${posIndex}`}
+                className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out"
+                style={{
+                  left: pos.x,
+                  top: pos.y,
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: pos.zIndex,
+                }}
+              >
+                <img
+                  src={allImages[imgIndex]}
+                  alt={`Celebration ${imgIndex + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            );
+          })}
+          
+          {/* Exiting image (animates down and fades out) */}
+          {exitingImage && (
             <div
-              key={index}
-              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated animate-carousel-scroll"
+              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out opacity-0"
               style={{
-                animationDelay: `${index * -4}s`,
+                left: exitingImage.position.x,
+                top: '120%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 0,
               }}
             >
               <img
-                src={img}
-                alt={`Celebration ${index + 1}`}
+                src={exitingImage.src}
+                alt="Exiting"
                 className="w-full h-full object-cover"
               />
             </div>
-          ))}
+          )}
+          
         </div>
       </div>
 
