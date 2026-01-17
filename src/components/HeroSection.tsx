@@ -9,11 +9,11 @@ import arc5 from "@/assets/arc-5.jpg";
 
 // Arc positioned in U-shape: edges lower, center higher
 const arcImages = [
-  { src: arc1, x: '10%', y: '55%', rotation: -10, zIndex: 1 },
-  { src: arc2, x: '30%', y: '35%', rotation: -5, zIndex: 2 },
-  { src: arc3, x: '50%', y: '30%', rotation: 0, zIndex: 3 },
-  { src: arc4, x: '70%', y: '35%', rotation: 5, zIndex: 2 },
-  { src: arc5, x: '90%', y: '55%', rotation: 10, zIndex: 1 },
+  { src: arc1, x: '10%', y: '75%', rotation: -10, zIndex: 1 },
+  { src: arc2, x: '30%', y: '55%', rotation: -5, zIndex: 2 },
+  { src: arc3, x: '50%', y: '50%', rotation: 0, zIndex: 3 },
+  { src: arc4, x: '70%', y: '55%', rotation: 5, zIndex: 2 },
+  { src: arc5, x: '90%', y: '75%', rotation: 10, zIndex: 1 },
 ];
 
 const HeroSection = () => {
