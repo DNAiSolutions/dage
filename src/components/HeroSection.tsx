@@ -1,3 +1,25 @@
+/**
+ * HERO SECTION LAYOUT CONSTRAINTS - DO NOT MODIFY
+ * ================================================
+ * 
+ * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
+ *    - Y positions: 60% (center), 65% (inner), 85% (edges)
+ *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
+ *    - Images positioned with z-20, headline has z-30
+ * 
+ * 2. ROTATING CTA CIRCLE: Must overlap video section by half
+ *    - Position: -bottom-14 md:-bottom-18 lg:-bottom-20
+ *    - Z-index: z-50 (stays above all other elements)
+ *    - Centered: left-1/2 -translate-x-1/2
+ * 
+ * 3. HEADLINE: Positioned at top with z-30
+ *    - Badge + 3-line headline structure
+ *    - pt-24 md:pt-32 padding from top
+ *    - Images render below, not overlapping text
+ * 
+ * These constraints apply regardless of headline text changes.
+ */
+
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
