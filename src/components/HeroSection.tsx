@@ -3,7 +3,7 @@
  * ================================================
  * 
  * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
- *    - Y positions: 55% (center), 70% (inner), 90% (edges)
+ *    - Y positions: 52% (center), 60% (inner), 82% (edges)
  *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
  *    - Images positioned with z-20, headline has z-30
  * 
@@ -29,13 +29,13 @@ import arc3 from "@/assets/arc-3.jpg";
 import arc4 from "@/assets/arc-4.jpg";
 import arc5 from "@/assets/arc-5.jpg";
 
-// Arc positioned in U-shape: edges lower, center higher
+// Arc positioned in circular curve: smooth arc from center to edges
 const arcImages = [
-  { src: arc1, x: '10%', y: '90%', rotation: 0, zIndex: 1 },
-  { src: arc2, x: '30%', y: '70%', rotation: 0, zIndex: 2 },
-  { src: arc3, x: '50%', y: '55%', rotation: 0, zIndex: 3 },
-  { src: arc4, x: '70%', y: '70%', rotation: 0, zIndex: 2 },
-  { src: arc5, x: '90%', y: '90%', rotation: 0, zIndex: 1 },
+  { src: arc1, x: '10%', y: '82%', rotation: 0, zIndex: 1 },
+  { src: arc2, x: '30%', y: '60%', rotation: 0, zIndex: 2 },
+  { src: arc3, x: '50%', y: '52%', rotation: 0, zIndex: 3 },
+  { src: arc4, x: '70%', y: '60%', rotation: 0, zIndex: 2 },
+  { src: arc5, x: '90%', y: '82%', rotation: 0, zIndex: 1 },
 ];
 
 const HeroSection = () => {
