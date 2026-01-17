@@ -3,7 +3,7 @@ import panoramaHero from "@/assets/panorama-hero.jpg";
 
 const VideoSection = () => {
   return (
-    <section className="relative w-full bg-background">
+    <section className="relative z-10 w-full bg-background">
       <div className="relative w-full aspect-video max-h-[80vh]">
         {/* Parade thumbnail image */}
         <img
