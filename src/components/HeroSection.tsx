@@ -88,7 +88,7 @@ const HeroSection = () => {
         </span>
 
         {/* 3-Line Headline */}
-        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase mix-blend-difference">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase mix-blend-overlay drop-shadow-lg">
           <span className="block">Your Gateway to</span>
           <span className="block">Celebration, Culture</span>
           <span className="block text-gold">Community</span>
