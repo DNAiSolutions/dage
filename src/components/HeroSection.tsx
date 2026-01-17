@@ -5,7 +5,7 @@
  * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
  *    - Y positions: 58% (center), 66% (inner), 88% (edges)
  *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
- *    - Images positioned with z-20, headline has z-30
+ *    - Images positioned with z-20, headline has z-30 with mix-blend-difference
  *    - CAROUSEL: Images rotate through positions every 4.5s
  * 
  * 2. ROTATING CTA CIRCLE: Must overlap video section by half
@@ -88,7 +88,7 @@ const HeroSection = () => {
         </span>
 
         {/* 3-Line Headline */}
-        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase mix-blend-difference">
           <span className="block">Your Gateway to</span>
           <span className="block">Celebration, Culture</span>
           <span className="block text-gold">Community</span>
@@ -96,8 +96,8 @@ const HeroSection = () => {
         
       </div>
 
-      {/* Arc Images Container - z-40 to appear above video */}
-      <div className="absolute inset-0 z-40 pointer-events-none">
+      {/* Arc Images Container - z-20 so headline blends in front */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
         <div className="relative w-full h-full max-w-7xl mx-auto">
           {/* Visible images in arc positions */}
           {visibleIndices.map((imgIndex, posIndex) => {
