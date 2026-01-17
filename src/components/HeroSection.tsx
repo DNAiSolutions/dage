@@ -6,7 +6,7 @@
  *    - Y positions: 58% (center), 66% (inner), 88% (edges)
  *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
  *    - Images positioned with z-20, headline has z-30
- *    - CAROUSEL: Images rotate through positions every 3s
+ *    - CAROUSEL: Images rotate through positions every 4.5s
  * 
  * 2. ROTATING CTA CIRCLE: Must overlap video section by half
  *    - Position: -bottom-14 md:-bottom-18 lg:-bottom-20
@@ -71,13 +71,13 @@ const HeroSection = () => {
         // Shift all indices: remove first, add next at end
         return [...prev.slice(1), nextIndex];
       });
-    }, 3000);
+    }, 4500);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative min-h-[120vh] bg-background overflow-hidden">
+    <section className="relative min-h-[120vh] bg-background overflow-visible">
       
       {/* Heading Section */}
       <div className="relative z-30 flex flex-col items-center pt-24 md:pt-32 px-4">
