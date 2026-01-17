@@ -38,11 +38,11 @@ const allImages = [carousel1, carousel2, carousel3, carousel4, carousel5, carous
 
 // Fixed arc positions (images rotate through these)
 const arcPositions = [
-  { x: '10%', y: '78%', zIndex: 1 },   // position 0 (left edge)
-  { x: '30%', y: '60%', zIndex: 2 },   // position 1 (inner left)
-  { x: '50%', y: '52%', zIndex: 3 },   // position 2 (center)
-  { x: '70%', y: '60%', zIndex: 2 },   // position 3 (inner right)
-  { x: '90%', y: '78%', zIndex: 1 },   // position 4 (right edge)
+  { x: '10%', y: '84%', zIndex: 1 },   // position 0 (left edge)
+  { x: '30%', y: '68%', zIndex: 2 },   // position 1 (inner left)
+  { x: '50%', y: '60%', zIndex: 3 },   // position 2 (center)
+  { x: '70%', y: '68%', zIndex: 2 },   // position 3 (inner right)
+  { x: '90%', y: '84%', zIndex: 1 },   // position 4 (right edge)
 ];
 
 const HeroSection = () => {
@@ -77,7 +77,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[85vh] bg-background overflow-visible">
+    <section className="relative min-h-[90vh] bg-background overflow-visible">
       
       {/* Heading Section */}
       <div className="relative z-30 flex flex-col items-center pt-24 md:pt-32 px-4">
@@ -89,9 +89,9 @@ const HeroSection = () => {
 
         {/* 3-Line Headline */}
         <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white text-center leading-[0.95] tracking-tight uppercase mix-blend-hard-light drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-          <span className="block">Your Gateway to</span>
-          <span className="block">Celebration, Culture</span>
-          <span className="block text-gold">Community</span>
+          <span className="block">Bringing Education, Culture,</span>
+          <span className="block">and Community Together</span>
+          <span className="block text-gold">in St. John Parish</span>
         </h1>
         
       </div>
