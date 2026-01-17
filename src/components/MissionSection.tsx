@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/dage-logo.png";
+import aboutImage from "@/assets/about-gala.png";
 
 const MissionSection = () => {
   return (
@@ -17,12 +17,12 @@ const MissionSection = () => {
             transition={{ duration: 0.6 }}
             className="flex justify-center lg:justify-start"
           >
-            <div className="relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-elevated">
               <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-primary/20 blur-3xl rounded-full" />
               <img
-                src={logo}
-                alt="Krewe of D.A.G.E."
-                className="relative h-64 md:h-80 w-auto animate-float"
+                src={aboutImage}
+                alt="Krewe of D.A.G.E. Gala"
+                className="relative w-full h-auto rounded-2xl"
               />
             </div>
           </motion.div>
