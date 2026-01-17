@@ -110,6 +110,7 @@ export default {
         "slide-in-right": "slide-in-right 0.5s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
         "rotate-circle": "rotate-circle 20s linear infinite",
+        "spin-slow": "rotate-circle 20s linear infinite",
       },
     },
   },
