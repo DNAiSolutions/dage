@@ -2,10 +2,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Crown, GraduationCap, PartyPopper, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import paradeImage from "@/assets/hero-parade.jpg";
-import scholarshipImage from "@/assets/scholarship-celebration.jpg";
-import courtImage from "@/assets/royal-court.jpg";
-import volunteerImage from "@/assets/volunteers.jpg";
+import paradeImage from "@/assets/parade-float.png";
+import courtImage from "@/assets/royal-court-new.png";
+import scholarship1 from "@/assets/scholarship-1.png";
+import scholarship2 from "@/assets/scholarship-2.png";
+import volunteerImage from "@/assets/volunteers-new.png";
 
 const programs = [
   {
@@ -16,6 +17,7 @@ const programs = [
     icon: PartyPopper,
     link: "/parade",
     color: "from-primary to-primary/80",
+    isScholarship: false,
   },
   {
     title: "Royal Court",
@@ -25,15 +27,18 @@ const programs = [
     icon: Crown,
     link: "/court",
     color: "from-gold to-gold/80",
+    isScholarship: false,
   },
   {
     title: "Scholarships",
     description:
       "Investing in our future. We provide scholarships to deserving high school students pursuing higher education.",
-    image: scholarshipImage,
+    image: scholarship1,
+    image2: scholarship2,
     icon: GraduationCap,
     link: "/scholarships",
     color: "from-secondary to-secondary/80",
+    isScholarship: true,
   },
   {
     title: "Volunteer",
@@ -43,6 +48,7 @@ const programs = [
     icon: Heart,
     link: "/volunteer",
     color: "from-primary to-primary/80",
+    isScholarship: false,
   },
 ];
 
@@ -85,12 +91,27 @@ const ProgramsSection = () => {
                 to={program.link}
                 className="group block relative h-80 rounded-2xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300"
               >
-                {/* Background Image */}
-                <img
-                  src={program.image}
-                  alt={program.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {/* Background Image(s) */}
+                {program.isScholarship ? (
+                  <div className="absolute inset-0 flex">
+                    <img
+                      src={program.image}
+                      alt={`${program.title} 1`}
+                      className="w-1/2 h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <img
+                      src={(program as any).image2}
+                      alt={`${program.title} 2`}
+                      className="w-1/2 h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
                 
                 {/* Overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-t ${program.color} opacity-80 group-hover:opacity-90 transition-opacity`} />
