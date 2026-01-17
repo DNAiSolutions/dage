@@ -3,7 +3,7 @@
  * ================================================
  * 
  * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
- *    - Y positions: 68% (center), 72% (inner), 90% (edges)
+ *    - Y positions: 78% (center), 82% (inner), 98% (edges)
  *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
  *    - Images positioned with z-20, headline has z-30
  * 
@@ -31,16 +31,16 @@ import arc5 from "@/assets/arc-5.jpg";
 
 // Arc positioned in U-shape: edges lower, center higher
 const arcImages = [
-  { src: arc1, x: '10%', y: '90%', rotation: -10, zIndex: 1 },
-  { src: arc2, x: '30%', y: '72%', rotation: -5, zIndex: 2 },
-  { src: arc3, x: '50%', y: '68%', rotation: 0, zIndex: 3 },
-  { src: arc4, x: '70%', y: '72%', rotation: 5, zIndex: 2 },
-  { src: arc5, x: '90%', y: '90%', rotation: 10, zIndex: 1 },
+  { src: arc1, x: '10%', y: '98%', rotation: -10, zIndex: 1 },
+  { src: arc2, x: '30%', y: '82%', rotation: -5, zIndex: 2 },
+  { src: arc3, x: '50%', y: '78%', rotation: 0, zIndex: 3 },
+  { src: arc4, x: '70%', y: '82%', rotation: 5, zIndex: 2 },
+  { src: arc5, x: '90%', y: '98%', rotation: 10, zIndex: 1 },
 ];
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-background">
+    <section className="relative min-h-[120vh] bg-background">
       
       {/* Heading Section */}
       <div className="relative z-30 flex flex-col items-center pt-24 md:pt-32 px-4">
@@ -51,7 +51,7 @@ const HeroSection = () => {
         </span>
 
         {/* 3-Line Headline */}
-        <h1 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase">
           <span className="block">Your Gateway to</span>
           <span className="block">Celebration, Culture</span>
           <span className="block text-gold">Community</span>
