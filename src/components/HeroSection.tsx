@@ -88,9 +88,9 @@ const HeroSection = () => {
         </span>
 
         {/* 3-Line Headline */}
-        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white text-center leading-[0.95] tracking-tight uppercase mix-blend-hard-light drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-          <span className="block">Bringing Education, Culture,</span>
-          <span className="block">and Community Together</span>
+        <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-center leading-[0.95] tracking-tight uppercase drop-shadow-[0_6px_30px_rgba(0,0,0,0.8)]">
+          <span className="block text-white">Bringing Education, Culture,</span>
+          <span className="block text-white">and Community Together</span>
           <span className="block text-gold">in St. John Parish</span>
         </h1>
         
@@ -156,6 +156,13 @@ const HeroSection = () => {
             viewBox="0 0 100 100"
           >
             <defs>
+              {/* Krewe Colors Gradient */}
+              <linearGradient id="kreweGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#68258C" />
+                <stop offset="33%" stopColor="#0FA958" />
+                <stop offset="66%" stopColor="#F2B705" />
+                <stop offset="100%" stopColor="#FFFFFF" />
+              </linearGradient>
               <path
                 id="circlePath"
                 d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"
@@ -166,8 +173,8 @@ const HeroSection = () => {
               cy="50"
               r="48"
               fill="none"
-              stroke="#0FA958"
-              strokeWidth="1.5"
+              stroke="url(#kreweGradient)"
+              strokeWidth="2"
             />
             <text className="fill-foreground text-[7px] font-heading font-semibold uppercase tracking-[0.15em]">
               <textPath href="#circlePath">
@@ -177,7 +184,7 @@ const HeroSection = () => {
           </svg>
 
           {/* Inner circle with arrow */}
-          <div className="absolute inset-4 md:inset-5 bg-[#0FA958] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <div className="absolute inset-4 md:inset-5 bg-gradient-to-br from-purple to-green via-gold rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
             <ArrowUpRight className="w-6 h-6 md:w-8 md:h-8 text-background transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
         </Link>
