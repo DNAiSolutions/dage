@@ -6,19 +6,20 @@ import royalCourt from "@/assets/royal-court.jpg";
 import volunteers from "@/assets/volunteers.jpg";
 import scholarship from "@/assets/scholarship-celebration.jpg";
 
-// 10 images arranged in an upward arc - positions based on Citypedia layout
-// Each has a base rotation and position along the arc curve
+// 10 images arranged in an upward arc curve (center high, edges low)
+// Images have FIXED tilt angles - they do NOT rotate on scroll
+// On scroll, images TRANSLATE along the arc path (slide effect)
 const arcImages = [
-  { id: 1, src: heroParade, baseX: -480, baseY: 180, baseRotation: -25 },
-  { id: 2, src: royalCourt, baseX: -380, baseY: 100, baseRotation: -20 },
-  { id: 3, src: volunteers, baseX: -280, baseY: 40, baseRotation: -15 },
-  { id: 4, src: scholarship, baseX: -180, baseY: 0, baseRotation: -10 },
-  { id: 5, src: heroParade, baseX: -80, baseY: -20, baseRotation: -5 },
-  { id: 6, src: royalCourt, baseX: 80, baseY: -20, baseRotation: 5 },
-  { id: 7, src: volunteers, baseX: 180, baseY: 0, baseRotation: 10 },
-  { id: 8, src: scholarship, baseX: 280, baseY: 40, baseRotation: 15 },
-  { id: 9, src: heroParade, baseX: 380, baseY: 100, baseRotation: 20 },
-  { id: 10, src: royalCourt, baseX: 480, baseY: 180, baseRotation: 25 },
+  { id: 1, src: heroParade, baseX: -420, baseY: 160, baseRotation: -12 },
+  { id: 2, src: royalCourt, baseX: -320, baseY: 80, baseRotation: -10 },
+  { id: 3, src: volunteers, baseX: -220, baseY: 20, baseRotation: -8 },
+  { id: 4, src: scholarship, baseX: -120, baseY: -30, baseRotation: -5 },
+  { id: 5, src: heroParade, baseX: -40, baseY: -50, baseRotation: -2 },
+  { id: 6, src: royalCourt, baseX: 40, baseY: -50, baseRotation: 2 },
+  { id: 7, src: volunteers, baseX: 120, baseY: -30, baseRotation: 5 },
+  { id: 8, src: scholarship, baseX: 220, baseY: 20, baseRotation: 8 },
+  { id: 9, src: heroParade, baseX: 320, baseY: 80, baseRotation: 10 },
+  { id: 10, src: royalCourt, baseX: 420, baseY: 160, baseRotation: 12 },
 ];
 
 interface ArcImageProps {
@@ -38,39 +39,45 @@ const ArcImage = ({
   index,
   scrollProgress 
 }: ArcImageProps) => {
-  // Scroll-based rotation matching Citypedia's rotateZ behavior
-  // Uses the exact transform stack: translate3d, scale3d, rotateX(0), rotateY(0), rotateZ(-193.81deg), skew(0)
-  const scrollRotation = useTransform(
+  // Scroll-based TRANSLATION along the arc path (NOT rotation)
+  // Images slide around the arc curve as user scrolls
+  const slideOffsetX = useTransform(
     scrollProgress, 
     [0, 0.5, 1], 
-    [baseRotation, baseRotation - 180, baseRotation - 360]
+    [0, 80, 160] // Shift right as scroll progresses
+  );
+  
+  const slideOffsetY = useTransform(
+    scrollProgress,
+    [0, 0.5, 1],
+    [0, 30, 80] // Shift down slightly to follow arc curve
   );
   
   const opacity = useTransform(
     scrollProgress, 
-    [0, 0.15, 0.5, 0.85, 1], 
-    [0.6, 1, 1, 1, 0.4]
+    [0, 0.15, 0.6, 0.85, 1], 
+    [0.8, 1, 1, 0.7, 0.3]
   );
 
   const scale = useTransform(
     scrollProgress,
     [0, 0.5, 1],
-    [1, 1.05, 0.95]
+    [1, 1.02, 0.95]
   );
 
-  // Build transform string from motion values
+  // Build transform: translate along arc path + FIXED rotation (no spinning)
   const transform = useTransform(
-    [scrollRotation, scale] as MotionValue<number>[],
-    ([rot, sc]: number[]) => 
-      `translate3d(0px, 0px, 0px) scale3d(${sc}, ${sc}, 1) rotateX(0deg) rotateY(0deg) rotateZ(${rot}deg) skew(0deg, 0deg)`
+    [slideOffsetX, slideOffsetY, scale] as MotionValue<number>[],
+    ([offsetX, offsetY, sc]: number[]) => 
+      `translate3d(${offsetX}px, ${offsetY}px, 0px) scale3d(${sc}, ${sc}, 1) rotate(${baseRotation}deg)`
   );
 
   return (
     <motion.div
       className="home-image-wrapper absolute"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: index * 0.05 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.08 }}
       style={{
         width: 150,
         height: 150,
@@ -78,7 +85,6 @@ const ArcImage = ({
         top: "50%",
         marginLeft: baseX,
         marginTop: baseY,
-        transformStyle: "preserve-3d",
         willChange: "transform",
         opacity,
         transform,
@@ -105,7 +111,7 @@ const HeroSection = () => {
   const circleRotate = useTransform(scrollYProgress, [0, 1], [0, 720]);
 
   return (
-    <section ref={sectionRef} className="relative bg-cream min-h-[200vh]">
+    <section ref={sectionRef} className="relative bg-cream min-h-[150vh]">
       {/* Home Section with Badge + Images + Headline */}
       <div className="home-section relative">
         {/* Top Welcome Badge */}
@@ -162,8 +168,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* City CTA Section - Rotating Circle Button */}
-        <div className="city-section relative mt-16 md:mt-20 flex justify-center z-20">
+        {/* City CTA Section - Rotating Circle Button - Moved closer to arc */}
+        <div className="city-section relative mt-4 md:mt-8 flex justify-center z-20">
           <motion.a
             href="/parade"
             className="city-cta relative cursor-pointer group"
@@ -210,8 +216,8 @@ const HeroSection = () => {
           </motion.a>
         </div>
 
-        {/* White space buffer - 64-80px margin to video */}
-        <div className="h-16 md:h-20 bg-cream" />
+        {/* Minimal whitespace - video visible in first viewport scroll */}
+        <div className="h-8 bg-cream" />
       </div>
 
       {/* Video Banner Section - revealed from behind the arc */}
