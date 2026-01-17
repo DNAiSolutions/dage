@@ -18,7 +18,7 @@ const arcImages = [
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-background overflow-hidden">
+    <section className="relative min-h-screen bg-background">
       
       {/* Heading Section */}
       <div className="relative z-30 flex flex-col items-center pt-24 md:pt-32 px-4">
@@ -62,7 +62,7 @@ const HeroSection = () => {
       </div>
 
       {/* Rotating CTA Circle */}
-      <div className="absolute bottom-16 md:bottom-24 left-1/2 -translate-x-1/2 z-40">
+      <div className="absolute -bottom-14 md:-bottom-18 lg:-bottom-20 left-1/2 -translate-x-1/2 z-50">
         <Link
           to="/parade"
           className="group relative block w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40"
