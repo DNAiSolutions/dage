@@ -88,13 +88,10 @@ const HeroSection = () => {
         </span>
 
         {/* 3-Line Headline */}
-        <h1 
-          className="font-display text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center leading-[0.95] tracking-tight uppercase bg-gradient-to-r from-[#68258C] via-[#0FA958] via-50% to-[#F2B705] bg-clip-text text-transparent"
-          style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}
-        >
-          <span className="block">Bringing Education, Culture,</span>
-          <span className="block">and Community Together</span>
-          <span className="block">in St. John Parish</span>
+        <h1 className="font-display text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center leading-[0.95] tracking-tight uppercase drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
+          <span className="block text-white">Bringing Education, Culture,</span>
+          <span className="block text-white">and Community Together</span>
+          <span className="block text-gold">in St. John Parish</span>
         </h1>
         
       </div>
@@ -187,7 +184,12 @@ const HeroSection = () => {
           </svg>
 
           {/* Inner circle with arrow */}
-          <div className="absolute inset-4 md:inset-5 bg-gradient-to-br from-purple to-green via-gold rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <div 
+            className="absolute inset-4 md:inset-5 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+            style={{
+              background: 'conic-gradient(from 0deg, #68258C, #0FA958, #F2B705, #FFFFFF, #68258C)'
+            }}
+          >
             <ArrowUpRight className="w-6 h-6 md:w-8 md:h-8 text-background transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
         </Link>
