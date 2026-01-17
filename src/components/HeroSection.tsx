@@ -88,7 +88,7 @@ const HeroSection = () => {
         </span>
 
         {/* 3-Line Headline */}
-        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground text-center leading-[0.95] tracking-tight uppercase mix-blend-overlay drop-shadow-lg">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white text-center leading-[0.95] tracking-tight uppercase mix-blend-hard-light drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
           <span className="block">Your Gateway to</span>
           <span className="block">Celebration, Culture</span>
           <span className="block text-gold">Community</span>
@@ -116,7 +116,7 @@ const HeroSection = () => {
                 <img
                   src={allImages[imgIndex]}
                   alt={`Celebration ${imgIndex + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover brightness-110"
                 />
               </div>
             );
