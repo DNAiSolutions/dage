@@ -227,4 +227,20 @@
       transform: rotate(360deg);
     }
   }
+
+  /* Arc carousel entering animation */
+  .animate-slide-up-fade-in {
+    animation: slideUpFadeIn 700ms ease-in-out forwards;
+  }
+
+  @keyframes slideUpFadeIn {
+    from {
+      top: 120%;
+      opacity: 0;
+    }
+    to {
+      top: 88%;
+      opacity: 1;
+    }
+  }
 }

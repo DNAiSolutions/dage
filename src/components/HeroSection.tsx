@@ -105,8 +105,8 @@ const HeroSection = () => {
         
       </div>
 
-      {/* Arc Images Container */}
-      <div className="absolute inset-0 z-20 pointer-events-none">
+      {/* Arc Images Container - z-40 to appear above video */}
+      <div className="absolute inset-0 z-40 pointer-events-none">
         <div className="relative w-full h-full max-w-7xl mx-auto">
           {/* Visible images in arc positions */}
           {visibleIndices.map((imgIndex, posIndex) => {
@@ -150,16 +150,16 @@ const HeroSection = () => {
             </div>
           )}
           
-          {/* Entering image (animates up and fades in) */}
+          {/* Entering image (starts from below, animates up with CSS animation) */}
           {enteringImage && (
             <div
-              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out"
+              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated animate-slide-up-fade-in"
               style={{
                 left: enteringImage.position.x,
-                top: enteringImage.position.y,
                 transform: 'translate(-50%, -50%)',
                 zIndex: enteringImage.position.zIndex,
-              }}
+                '--target-top': enteringImage.position.y,
+              } as React.CSSProperties}
             >
               <img
                 src={enteringImage.src}
