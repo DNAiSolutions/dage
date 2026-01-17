@@ -3,9 +3,10 @@
  * ================================================
  * 
  * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
- *    - Y positions: 52% (center), 60% (inner), 82% (edges)
+ *    - Y positions: 58% (center), 66% (inner), 88% (edges)
  *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
  *    - Images positioned with z-20, headline has z-30
+ *    - CAROUSEL: Images rotate through positions every 3s
  * 
  * 2. ROTATING CTA CIRCLE: Must overlap video section by half
  *    - Position: -bottom-14 md:-bottom-18 lg:-bottom-20
@@ -20,6 +21,7 @@
  * These constraints apply regardless of headline text changes.
  */
 
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
@@ -28,19 +30,63 @@ import arc2 from "@/assets/arc-2.jpg";
 import arc3 from "@/assets/arc-3.jpg";
 import arc4 from "@/assets/arc-4.jpg";
 import arc5 from "@/assets/arc-5.jpg";
+import arc6 from "@/assets/arc-6.jpg";
+import arc7 from "@/assets/arc-7.jpg";
+import arc8 from "@/assets/arc-8.jpg";
 
-// Arc positioned in circular curve: smooth arc from center to edges
-const arcImages = [
-  { src: arc1, x: '10%', y: '82%', rotation: 0, zIndex: 1 },
-  { src: arc2, x: '30%', y: '60%', rotation: 0, zIndex: 2 },
-  { src: arc3, x: '50%', y: '52%', rotation: 0, zIndex: 3 },
-  { src: arc4, x: '70%', y: '60%', rotation: 0, zIndex: 2 },
-  { src: arc5, x: '90%', y: '82%', rotation: 0, zIndex: 1 },
+// All available images for rotation
+const allImages = [arc1, arc2, arc3, arc4, arc5, arc6, arc7, arc8];
+
+// Fixed arc positions (images rotate through these)
+const arcPositions = [
+  { x: '10%', y: '88%', zIndex: 1 },   // position 0 (left edge)
+  { x: '30%', y: '66%', zIndex: 2 },   // position 1 (inner left)
+  { x: '50%', y: '58%', zIndex: 3 },   // position 2 (center)
+  { x: '70%', y: '66%', zIndex: 2 },   // position 3 (inner right)
+  { x: '90%', y: '88%', zIndex: 1 },   // position 4 (right edge)
 ];
 
 const HeroSection = () => {
+  // Track which 5 images are currently visible (indices into allImages)
+  const [visibleIndices, setVisibleIndices] = useState([0, 1, 2, 3, 4]);
+  const [exitingImage, setExitingImage] = useState<{ src: string; position: typeof arcPositions[0] } | null>(null);
+  const [enteringImage, setEnteringImage] = useState<{ src: string; position: typeof arcPositions[0] } | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleIndices(prev => {
+        // Get next image index (wraps around)
+        const lastVisibleIndex = prev[prev.length - 1];
+        const nextIndex = (lastVisibleIndex + 1) % allImages.length;
+        
+        // Set exiting image (rightmost)
+        setExitingImage({
+          src: allImages[prev[4]],
+          position: arcPositions[4]
+        });
+        
+        // Set entering image (will appear at left)
+        setEnteringImage({
+          src: allImages[nextIndex],
+          position: arcPositions[0]
+        });
+        
+        // Clear animations after they complete
+        setTimeout(() => {
+          setExitingImage(null);
+          setEnteringImage(null);
+        }, 700);
+        
+        // Shift all indices: remove first, add next at end
+        return [...prev.slice(1), nextIndex];
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="relative min-h-[120vh] bg-background">
+    <section className="relative min-h-[120vh] bg-background overflow-hidden">
       
       {/* Heading Section */}
       <div className="relative z-30 flex flex-col items-center pt-24 md:pt-32 px-4">
@@ -62,24 +108,66 @@ const HeroSection = () => {
       {/* Arc Images Container */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         <div className="relative w-full h-full max-w-7xl mx-auto">
-          {arcImages.map((img, i) => (
+          {/* Visible images in arc positions */}
+          {visibleIndices.map((imgIndex, posIndex) => {
+            const pos = arcPositions[posIndex];
+            return (
+              <div
+                key={`${imgIndex}-${posIndex}`}
+                className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out"
+                style={{
+                  left: pos.x,
+                  top: pos.y,
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: pos.zIndex,
+                }}
+              >
+                <img
+                  src={allImages[imgIndex]}
+                  alt={`Celebration ${imgIndex + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            );
+          })}
+          
+          {/* Exiting image (animates down and fades out) */}
+          {exitingImage && (
             <div
-              key={i}
-              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated"
+              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out opacity-0"
               style={{
-                left: img.x,
-                top: img.y,
-                transform: `translate(-50%, -50%) rotate(${img.rotation}deg)`,
-                zIndex: img.zIndex,
+                left: exitingImage.position.x,
+                top: '120%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 0,
               }}
             >
               <img
-                src={img.src}
-                alt={`Celebration ${i + 1}`}
+                src={exitingImage.src}
+                alt="Exiting"
                 className="w-full h-full object-cover"
               />
             </div>
-          ))}
+          )}
+          
+          {/* Entering image (animates up and fades in) */}
+          {enteringImage && (
+            <div
+              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out"
+              style={{
+                left: enteringImage.position.x,
+                top: enteringImage.position.y,
+                transform: 'translate(-50%, -50%)',
+                zIndex: enteringImage.position.zIndex,
+              }}
+            >
+              <img
+                src={enteringImage.src}
+                alt="Entering"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
         </div>
       </div>
 
