@@ -20,10 +20,8 @@
  * These constraints apply regardless of headline text changes.
  */
 
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
 
 import arc1 from "@/assets/arc-1.jpg";
 import arc2 from "@/assets/arc-2.jpg";
@@ -31,35 +29,16 @@ import arc3 from "@/assets/arc-3.jpg";
 import arc4 from "@/assets/arc-4.jpg";
 import arc5 from "@/assets/arc-5.jpg";
 
-// Image sources only
-const arcImages = [arc1, arc2, arc3, arc4, arc5];
-
-// Arc positions in U-shape: edges lower, center higher
-const arcPositions = [
-  { x: '10%', y: '85%', rotation: -10, zIndex: 1 },
-  { x: '30%', y: '65%', rotation: -5, zIndex: 2 },
-  { x: '50%', y: '60%', rotation: 0, zIndex: 3 },
-  { x: '70%', y: '65%', rotation: 5, zIndex: 2 },
-  { x: '90%', y: '85%', rotation: 10, zIndex: 1 },
+// Arc positioned in U-shape: edges lower, center higher
+const arcImages = [
+  { src: arc1, x: '10%', y: '85%', rotation: -10, zIndex: 1 },
+  { src: arc2, x: '30%', y: '65%', rotation: -5, zIndex: 2 },
+  { src: arc3, x: '50%', y: '60%', rotation: 0, zIndex: 3 },
+  { src: arc4, x: '70%', y: '65%', rotation: 5, zIndex: 2 },
+  { src: arc5, x: '90%', y: '85%', rotation: 10, zIndex: 1 },
 ];
 
 const HeroSection = () => {
-  const [offset, setOffset] = useState(0);
-
-  // Rotate positions every 4 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOffset((prev) => (prev + 1) % 5);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Get current position for each image based on offset
-  const getPosition = (imageIndex: number) => {
-    const posIndex = (imageIndex + offset) % 5;
-    return arcPositions[posIndex];
-  };
-
   return (
     <section className="relative min-h-screen bg-background">
       
@@ -80,38 +59,27 @@ const HeroSection = () => {
         
       </div>
 
-      {/* Arc Images Container - Animated Carousel */}
+      {/* Arc Images Container */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         <div className="relative w-full h-full max-w-7xl mx-auto">
-          {arcImages.map((src, i) => {
-            const pos = getPosition(i);
-            return (
-              <motion.div
-                key={i}
-                className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated"
-                animate={{
-                  left: pos.x,
-                  top: pos.y,
-                  rotate: pos.rotation,
-                }}
-                transition={{
-                  duration: 1.2,
-                  ease: "easeInOut",
-                }}
-                style={{
-                  x: '-50%',
-                  y: '-50%',
-                  zIndex: pos.zIndex,
-                }}
-              >
-                <img
-                  src={src}
-                  alt={`Celebration ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            );
-          })}
+          {arcImages.map((img, i) => (
+            <div
+              key={i}
+              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated"
+              style={{
+                left: img.x,
+                top: img.y,
+                transform: `translate(-50%, -50%) rotate(${img.rotation}deg)`,
+                zIndex: img.zIndex,
+              }}
+            >
+              <img
+                src={img.src}
+                alt={`Celebration ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
         </div>
       </div>
 
