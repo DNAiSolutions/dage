@@ -25,17 +25,16 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
-import arc1 from "@/assets/arc-1.jpg";
-import arc2 from "@/assets/arc-2.jpg";
-import arc3 from "@/assets/arc-3.jpg";
-import arc4 from "@/assets/arc-4.jpg";
-import arc5 from "@/assets/arc-5.jpg";
-import arc6 from "@/assets/arc-6.jpg";
-import arc7 from "@/assets/arc-7.jpg";
-import arc8 from "@/assets/arc-8.jpg";
+import carousel1 from "@/assets/carousel-1.png";
+import carousel2 from "@/assets/carousel-2.png";
+import carousel3 from "@/assets/carousel-3.png";
+import carousel4 from "@/assets/carousel-4.png";
+import carousel5 from "@/assets/carousel-5.png";
+import carousel6 from "@/assets/carousel-6.png";
+import carousel7 from "@/assets/carousel-7.png";
 
 // All available images for rotation
-const allImages = [arc1, arc2, arc3, arc4, arc5, arc6, arc7, arc8];
+const allImages = [carousel1, carousel2, carousel3, carousel4, carousel5, carousel6, carousel7];
 
 // Fixed arc positions (images rotate through these)
 const arcPositions = [
@@ -50,7 +49,6 @@ const HeroSection = () => {
   // Track which 5 images are currently visible (indices into allImages)
   const [visibleIndices, setVisibleIndices] = useState([0, 1, 2, 3, 4]);
   const [exitingImage, setExitingImage] = useState<{ src: string; position: typeof arcPositions[0] } | null>(null);
-  const [enteringImage, setEnteringImage] = useState<{ src: string; position: typeof arcPositions[0] } | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,22 +57,15 @@ const HeroSection = () => {
         const lastVisibleIndex = prev[prev.length - 1];
         const nextIndex = (lastVisibleIndex + 1) % allImages.length;
         
-        // Set exiting image (rightmost)
+        // Set exiting image (rightmost) - animates down and fades out
         setExitingImage({
           src: allImages[prev[4]],
           position: arcPositions[4]
         });
         
-        // Set entering image (will appear at left)
-        setEnteringImage({
-          src: allImages[nextIndex],
-          position: arcPositions[0]
-        });
-        
-        // Clear animations after they complete
+        // Clear exit animation after it completes
         setTimeout(() => {
           setExitingImage(null);
-          setEnteringImage(null);
         }, 700);
         
         // Shift all indices: remove first, add next at end
@@ -150,24 +141,6 @@ const HeroSection = () => {
             </div>
           )}
           
-          {/* Entering image (starts from below, animates up with CSS animation) */}
-          {enteringImage && (
-            <div
-              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated animate-slide-up-fade-in"
-              style={{
-                left: enteringImage.position.x,
-                transform: 'translate(-50%, -50%)',
-                zIndex: enteringImage.position.zIndex,
-                '--target-top': enteringImage.position.y,
-              } as React.CSSProperties}
-            >
-              <img
-                src={enteringImage.src}
-                alt="Entering"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
         </div>
       </div>
 
