@@ -38,11 +38,11 @@ const allImages = [carousel1, carousel2, carousel3, carousel4, carousel5, carous
 
 // Fixed arc positions (images rotate through these)
 const arcPositions = [
-  { x: '10%', y: '88%', zIndex: 1 },   // position 0 (left edge)
-  { x: '30%', y: '66%', zIndex: 2 },   // position 1 (inner left)
-  { x: '50%', y: '58%', zIndex: 3 },   // position 2 (center)
-  { x: '70%', y: '66%', zIndex: 2 },   // position 3 (inner right)
-  { x: '90%', y: '88%', zIndex: 1 },   // position 4 (right edge)
+  { x: '10%', y: '78%', zIndex: 1 },   // position 0 (left edge)
+  { x: '30%', y: '60%', zIndex: 2 },   // position 1 (inner left)
+  { x: '50%', y: '52%', zIndex: 3 },   // position 2 (center)
+  { x: '70%', y: '60%', zIndex: 2 },   // position 3 (inner right)
+  { x: '90%', y: '78%', zIndex: 1 },   // position 4 (right edge)
 ];
 
 const HeroSection = () => {
@@ -77,7 +77,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[120vh] bg-background overflow-visible">
+    <section className="relative min-h-[85vh] bg-background overflow-visible">
       
       {/* Heading Section */}
       <div className="relative z-30 flex flex-col items-center pt-24 md:pt-32 px-4">
@@ -128,7 +128,7 @@ const HeroSection = () => {
               className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated transition-all duration-700 ease-in-out opacity-0"
               style={{
                 left: exitingImage.position.x,
-                top: '120%',
+                top: '100%',
                 transform: 'translate(-50%, -50%)',
                 zIndex: 0,
               }}
@@ -166,7 +166,7 @@ const HeroSection = () => {
               cy="50"
               r="48"
               fill="none"
-              stroke="hsl(var(--gold))"
+              stroke="#0FA958"
               strokeWidth="1.5"
             />
             <text className="fill-foreground text-[7px] font-heading font-semibold uppercase tracking-[0.15em]">
@@ -177,7 +177,7 @@ const HeroSection = () => {
           </svg>
 
           {/* Inner circle with arrow */}
-          <div className="absolute inset-4 md:inset-5 bg-foreground rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <div className="absolute inset-4 md:inset-5 bg-[#0FA958] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
             <ArrowUpRight className="w-6 h-6 md:w-8 md:h-8 text-background transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
         </Link>
