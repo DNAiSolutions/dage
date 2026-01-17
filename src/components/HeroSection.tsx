@@ -89,9 +89,9 @@ const HeroSection = () => {
 
         {/* 3-Line Headline */}
         <h1 className="font-display text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center leading-[0.95] tracking-tight uppercase drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
-          <span className="block text-white">Bringing Education, Culture,</span>
-          <span className="block text-white">and Community Together</span>
-          <span className="block text-gold">in St. John Parish</span>
+          <span className="block text-[#68258C]">Bringing Education, Culture,</span>
+          <span className="block text-[#68258C]">and Community Together</span>
+          <span className="block text-white">in St. John Parish</span>
         </h1>
         
       </div>
