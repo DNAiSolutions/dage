@@ -3,7 +3,8 @@
  * ================================================
  * 
  * 1. ARC IMAGES: Must ALWAYS remain BELOW the headline text
- *    - Rotating carousel along elliptical path
+ *    - Y positions: 60% (center), 65% (inner), 85% (edges)
+ *    - X spacing: 10%, 30%, 50%, 70%, 90% (minimum spread)
  *    - Images positioned with z-20, headline has z-30
  * 
  * 2. ROTATING CTA CIRCLE: Must overlap video section by half
@@ -21,8 +22,6 @@
 
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 
 import arc1 from "@/assets/arc-1.jpg";
 import arc2 from "@/assets/arc-2.jpg";
@@ -30,69 +29,16 @@ import arc3 from "@/assets/arc-3.jpg";
 import arc4 from "@/assets/arc-4.jpg";
 import arc5 from "@/assets/arc-5.jpg";
 
-const arcImages = [arc1, arc2, arc3, arc4, arc5];
-
-// Carousel configuration
-const ROTATION_DURATION = 25; // seconds for one full rotation
-const NUM_IMAGES = arcImages.length;
-const ANGLE_OFFSET = 360 / NUM_IMAGES; // 72° between each image
+// Arc positioned in U-shape: edges lower, center higher
+const arcImages = [
+  { src: arc1, x: '10%', y: '85%', rotation: -10, zIndex: 1 },
+  { src: arc2, x: '30%', y: '65%', rotation: -5, zIndex: 2 },
+  { src: arc3, x: '50%', y: '60%', rotation: 0, zIndex: 3 },
+  { src: arc4, x: '70%', y: '65%', rotation: 5, zIndex: 2 },
+  { src: arc5, x: '90%', y: '85%', rotation: 10, zIndex: 1 },
+];
 
 const HeroSection = () => {
-  const [rotation, setRotation] = useState(0);
-
-  useEffect(() => {
-    let animationId: number;
-    let lastTime = performance.now();
-
-    const animate = (currentTime: number) => {
-      const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
-      lastTime = currentTime;
-      
-      // Rotate clockwise (positive direction)
-      setRotation(prev => (prev + (360 / ROTATION_DURATION) * deltaTime) % 360);
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
-
-  // Calculate position for each image based on current rotation
-  const getImagePosition = (index: number) => {
-    // Start angle for this image (offset by index)
-    const baseAngle = index * ANGLE_OFFSET;
-    // Current angle including rotation (clockwise = subtract rotation)
-    const currentAngle = (baseAngle - rotation + 360) % 360;
-    // Convert to radians (start from top, go clockwise)
-    const radians = ((currentAngle - 90) * Math.PI) / 180;
-
-    // Ellipse parameters - steeper arc (more vertical curve)
-    const radiusX = 42; // % of container width
-    const radiusY = 32; // % of container height - steeper curve
-
-    // Calculate position on ellipse
-    const x = 50 + radiusX * Math.cos(radians); // Center at 50%
-    const y = 55 + radiusY * Math.sin(radians); // Center below headline
-
-    // Calculate rotation based on position on arc (tangent angle)
-    const tiltAngle = Math.atan2(
-      radiusY * Math.cos(radians),
-      -radiusX * Math.sin(radians)
-    ) * (180 / Math.PI);
-
-    // Visibility: hide images in bottom half (behind video)
-    // Top of arc (y < 55%) = visible, bottom (y > 75%) = hidden
-    const isInTopHalf = currentAngle >= 180 && currentAngle <= 360 || currentAngle >= 0 && currentAngle <= 0;
-    
-    // More accurate: use y position for visibility
-    const opacity = y < 75 ? 1 : Math.max(0, 1 - (y - 75) / 20);
-    
-    // Z-index based on y position (lower = in front)
-    const zIndex = Math.round(10 - (y / 10));
-
-    return { x, y, tiltAngle, opacity, zIndex };
-  };
-
   return (
     <section className="relative min-h-screen bg-background">
       
@@ -113,32 +59,27 @@ const HeroSection = () => {
         
       </div>
 
-      {/* Rotating Arc Images Container */}
-      <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+      {/* Arc Images Container */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
         <div className="relative w-full h-full max-w-7xl mx-auto">
-          {arcImages.map((src, i) => {
-            const { x, y, tiltAngle, opacity, zIndex } = getImagePosition(i);
-            
-            return (
-              <motion.div
-                key={i}
-                className="absolute w-28 sm:w-36 md:w-44 lg:w-52 aspect-square rounded-xl overflow-hidden shadow-elevated"
-                style={{
-                  left: `${x}%`,
-                  top: `${y}%`,
-                  transform: `translate(-50%, -50%) rotate(${tiltAngle}deg)`,
-                  opacity,
-                  zIndex,
-                }}
-              >
-                <img
-                  src={src}
-                  alt={`Celebration ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            );
-          })}
+          {arcImages.map((img, i) => (
+            <div
+              key={i}
+              className="absolute w-32 sm:w-40 md:w-48 lg:w-56 aspect-square rounded-xl overflow-hidden shadow-elevated"
+              style={{
+                left: img.x,
+                top: img.y,
+                transform: `translate(-50%, -50%) rotate(${img.rotation}deg)`,
+                zIndex: img.zIndex,
+              }}
+            >
+              <img
+                src={img.src}
+                alt={`Celebration ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
         </div>
       </div>
 
