@@ -257,11 +257,16 @@ export default function ProjectChecklist() {
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 right-4 z-[9999] flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-105"
+        className={`fixed top-4 right-4 z-[9999] flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
+          !isOpen ? "animate-checklist-glow" : ""
+        }`}
         style={{
           background: "linear-gradient(135deg, #5B2C8E 0%, #7B3FA0 100%)",
           color: "#FFD700",
           border: "2px solid #FFD700",
+          boxShadow: !isOpen
+            ? "0 0 15px rgba(242, 183, 5, 0.5), 0 0 30px rgba(91, 44, 142, 0.4)"
+            : "0 4px 12px rgba(0,0,0,0.3)",
         }}
       >
         {isOpen ? <X size={18} /> : <Menu size={18} />}
