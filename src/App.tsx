@@ -13,6 +13,7 @@ import Volunteer from "./pages/Volunteer";
 import Contact from "./pages/Contact";
 import Donate from "./pages/Donate";
 import NotFound from "./pages/NotFound";
+import ProjectChecklist from "./components/ProjectChecklist";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <ProjectChecklist />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
