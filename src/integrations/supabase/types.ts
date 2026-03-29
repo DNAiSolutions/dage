@@ -14,16 +14,169 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      expected_participants: {
+        Row: {
+          created_at: string
+          email: string
+          form_id: string
+          full_name: string
+          id: string
+          phone: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          form_id: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          form_id?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expected_participants_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "waiver_forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      waiver_forms: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      waiver_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          emergency_contact_name: string
+          emergency_contact_phone: string
+          form_id: string
+          full_name: string
+          id: string
+          participant_name: string
+          phone: string | null
+          signature_data: string
+          signed_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          emergency_contact_name: string
+          emergency_contact_phone: string
+          form_id: string
+          full_name: string
+          id?: string
+          participant_name: string
+          phone?: string | null
+          signature_data: string
+          signed_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          emergency_contact_name?: string
+          emergency_contact_phone?: string
+          form_id?: string
+          full_name?: string
+          id?: string
+          participant_name?: string
+          phone?: string | null
+          signature_data?: string
+          signed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waiver_submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "waiver_forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "super_admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +303,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "super_admin"],
+    },
   },
 } as const
