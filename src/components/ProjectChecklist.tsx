@@ -254,13 +254,15 @@ export default function ProjectChecklist() {
 
   return (
     <>
-      {/* Floating Toggle Button */}
+      {/* Floating Chat Bubble Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed top-4 right-4 z-[9999] flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
+        className={`fixed bottom-6 right-6 z-[9999] flex items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
           !isOpen ? "animate-checklist-glow" : ""
         }`}
         style={{
+          width: isOpen ? "48px" : "60px",
+          height: isOpen ? "48px" : "60px",
           background: "linear-gradient(135deg, #5B2C8E 0%, #7B3FA0 100%)",
           color: "#FFD700",
           border: "2px solid #FFD700",
@@ -269,13 +271,10 @@ export default function ProjectChecklist() {
             : "0 4px 12px rgba(0,0,0,0.3)",
         }}
       >
-        {isOpen ? <X size={18} /> : <Menu size={18} />}
-        <span className="text-sm font-bold tracking-wide">
-          {isOpen ? "Close" : "Checklist"}
-        </span>
+        {isOpen ? <X size={20} /> : <span className="text-2xl">📋</span>}
         {!isOpen && (
           <span
-            className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full"
+            className="absolute -top-1 -right-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
             style={{ background: "#FFD700", color: "#5B2C8E" }}
           >
             {progressPercent}%
@@ -283,16 +282,16 @@ export default function ProjectChecklist() {
         )}
       </button>
 
-      {/* Side Panel */}
+      {/* Pop-up Panel from Bottom Right */}
       <div
-        className={`fixed top-0 right-0 h-full z-[9998] transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed bottom-20 right-6 z-[9998] transition-all duration-300 ease-in-out origin-bottom-right ${
+          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         }`}
-        style={{ width: "400px", maxWidth: "90vw" }}
+        style={{ width: "400px", maxWidth: "90vw", maxHeight: "80vh" }}
       >
         <div
-          className="h-full flex flex-col shadow-2xl"
-          style={{ background: "#1a1025", borderLeft: "3px solid #FFD700" }}
+          className="flex flex-col shadow-2xl rounded-2xl overflow-hidden"
+          style={{ background: "#1a1025", border: "2px solid #FFD700", maxHeight: "80vh" }}
         >
           {/* Header */}
           <div
