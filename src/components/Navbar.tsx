@@ -74,6 +74,9 @@ const Navbar = () => {
             <Button variant="gold" size="sm" className="ml-3" asChild>
               <Link to="/donate">Donate</Link>
             </Button>
+            <Button variant="outline" size="sm" className="ml-2" asChild>
+              <Link to="/auth">Portal</Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
