@@ -282,12 +282,12 @@ export default function ProjectChecklist() {
         )}
       </button>
 
-      {/* Side Panel */}
+      {/* Pop-up Panel from Bottom Right */}
       <div
-        className={`fixed top-0 right-0 h-full z-[9998] transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed bottom-20 right-6 z-[9998] transition-all duration-300 ease-in-out origin-bottom-right ${
+          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         }`}
-        style={{ width: "400px", maxWidth: "90vw" }}
+        style={{ width: "400px", maxWidth: "90vw", maxHeight: "80vh" }}
       >
         <div
           className="h-full flex flex-col shadow-2xl"
