@@ -254,13 +254,15 @@ export default function ProjectChecklist() {
 
   return (
     <>
-      {/* Floating Toggle Button */}
+      {/* Floating Chat Bubble Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed top-4 right-4 z-[9999] flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
+        className={`fixed bottom-6 right-6 z-[9999] flex items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
           !isOpen ? "animate-checklist-glow" : ""
         }`}
         style={{
+          width: isOpen ? "48px" : "60px",
+          height: isOpen ? "48px" : "60px",
           background: "linear-gradient(135deg, #5B2C8E 0%, #7B3FA0 100%)",
           color: "#FFD700",
           border: "2px solid #FFD700",
@@ -269,13 +271,10 @@ export default function ProjectChecklist() {
             : "0 4px 12px rgba(0,0,0,0.3)",
         }}
       >
-        {isOpen ? <X size={18} /> : <Menu size={18} />}
-        <span className="text-sm font-bold tracking-wide">
-          {isOpen ? "Close" : "Checklist"}
-        </span>
+        {isOpen ? <X size={20} /> : <span className="text-2xl">📋</span>}
         {!isOpen && (
           <span
-            className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full"
+            className="absolute -top-1 -right-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
             style={{ background: "#FFD700", color: "#5B2C8E" }}
           >
             {progressPercent}%
