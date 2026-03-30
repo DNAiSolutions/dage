@@ -1,20 +1,27 @@
 
 
-## Add Project Checklist Widget
+## Two Changes
 
-A floating checklist panel for tracking content, photos, and decisions across all site sections.
+### 1. Move Checklist to Bottom-Right Chat Bubble
 
-### Steps
+Reposition the floating toggle button from `top-4 right-4` to `bottom-6 right-6` so it sits like a chat bubble. The panel will pop up from the bottom-right instead of sliding from the top-right.
 
-1. **Create `src/components/ProjectChecklist.tsx`** — paste the provided component code as-is.
+**File:** `src/components/ProjectChecklist.tsx`
+- Change button position to `fixed bottom-6 right-6`
+- Make the button circular (round shape, larger)
+- Panel opens upward from bottom-right (anchored to bottom, max-height ~80vh)
+- Keep the glow animation
 
-2. **Update `src/pages/Index.tsx`** — import and render `<ProjectChecklist />` alongside existing content so the floating button appears on the homepage.
+### 2. Add Login/Portal Link to Navbar
 
-3. **Update `src/App.tsx`** — alternatively, add `<ProjectChecklist />` at the app root level (outside `<Routes>`) so it appears on every page, not just the homepage.
+Add a small "Portal" or login link in the navbar so you can access `/auth` to log into the backend.
 
-### Technical Notes
-- Component is self-contained with localStorage persistence (`dage-project-checklist` key)
-- Uses lucide-react icons already in the project
-- Fixed positioning with z-index 9997-9999, won't conflict with existing layout
-- No new dependencies required
+**File:** `src/components/Navbar.tsx`
+- Add a "Portal" link next to the Donate button (desktop: icon + text, mobile: in menu)
+- Links to `/auth` route which already exists
+
+### Technical Details
+- No new dependencies
+- No database changes
+- Two file edits total
 
