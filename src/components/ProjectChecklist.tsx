@@ -290,8 +290,8 @@ export default function ProjectChecklist() {
         style={{ width: "400px", maxWidth: "90vw", maxHeight: "80vh" }}
       >
         <div
-          className="h-full flex flex-col shadow-2xl"
-          style={{ background: "#1a1025", borderLeft: "3px solid #FFD700" }}
+          className="flex flex-col shadow-2xl rounded-2xl overflow-hidden"
+          style={{ background: "#1a1025", border: "2px solid #FFD700", maxHeight: "80vh" }}
         >
           {/* Header */}
           <div
