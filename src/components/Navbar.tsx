@@ -74,9 +74,6 @@ const Navbar = () => {
             <Button variant="gold" size="sm" className="ml-3" asChild>
               <Link to="/donate">Donate</Link>
             </Button>
-            <Button variant="outline" size="sm" className="ml-2" asChild>
-              <Link to="/auth">Portal</Link>
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -115,9 +112,6 @@ const Navbar = () => {
               ))}
               <Button variant="gold" className="mt-2" asChild>
                 <Link to="/donate">Donate Now</Link>
-              </Button>
-              <Button variant="outline" className="mt-2" asChild>
-                <Link to="/auth">Portal Login</Link>
               </Button>
             </div>
           </motion.div>
