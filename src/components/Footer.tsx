@@ -125,9 +125,17 @@ const Footer = () => {
             <p className="text-primary-foreground/60 text-sm">
               © {new Date().getFullYear()} Krewe of D.A.G.E. All rights reserved.
             </p>
-            <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
-              Made with <Heart className="h-4 w-4 text-gold fill-gold" /> for the community
-            </p>
+            <div className="flex items-center gap-4">
+              <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
+                Made with <Heart className="h-4 w-4 text-gold fill-gold" /> for the community
+              </p>
+              <Link
+                to="/auth"
+                className="text-primary-foreground/40 hover:text-gold transition-colors text-xs"
+              >
+                Admin
+              </Link>
+            </div>
           </div>
         </div>
       </div>
