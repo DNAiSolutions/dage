@@ -7,6 +7,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useAdminTheme } from "@/components/admin/AdminLayout";
 import { Search, UserPlus, CheckCircle2, Clock, Users, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 
@@ -20,6 +21,9 @@ interface Participant {
 }
 
 export default function AdminTracker() {
+  const theme = useAdminTheme();
+  const isDark = theme === "dark";
+
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "pending" | "completed">("all");
@@ -30,25 +34,35 @@ export default function AdminTracker() {
   const [newEmail, setNewEmail] = useState("");
   const [newPhone, setNewPhone] = useState("");
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // Theme tokens
+  const cardBg       = isDark ? "#1c1130" : "#ffffff";
+  const cardBdr      = isDark ? "1px solid #2a1a42" : "1px solid #e2e8f0";
+  const textPri      = isDark ? "rgba(255,255,255,0.9)" : "#111827";
+  const textSec      = isDark ? "rgba(255,255,255,0.6)" : "#6b7280";
+  const textMuted    = isDark ? "rgba(255,255,255,0.4)" : "#9ca3af";
+  const textFaint    = isDark ? "rgba(255,255,255,0.25)" : "#d1d5db";
+  const trackBg      = isDark ? "#2a1a42" : "#e2e8f0";
+  const pctColor     = isDark ? "#F2B705" : "#68258C";
+  const thBdr        = isDark ? "#2a1a42" : "#e2e8f0";
+  const rowBdr       = isDark ? "rgba(42,26,66,0.5)" : "#f1f5f9";
+  const rowHover     = isDark ? "rgba(42,26,66,0.5)" : "#f8f9fa";
+  const dialogBg     = isDark ? "#1c1130" : "#ffffff";
+  const dialogBdr    = isDark ? "#2a1a42" : "#e2e8f0";
+  const inputCls     = isDark
+    ? "bg-[#0d0714] border-[#2a1a42] text-white placeholder:text-white/25 focus:border-[#68258C]"
+    : "bg-gray-50 border-gray-200 text-gray-900";
+  const inactiveFilter = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)";
+
+  useEffect(() => { fetchData(); }, []);
 
   async function fetchData() {
     const { data: forms } = await supabase
-      .from("waiver_forms")
-      .select("id")
-      .eq("is_active", true)
-      .limit(1)
-      .single();
-
+      .from("waiver_forms").select("id").eq("is_active", true).limit(1).single();
     if (forms) {
       setFormId(forms.id);
       const { data } = await supabase
-        .from("expected_participants")
-        .select("*")
-        .eq("form_id", forms.id)
-        .order("created_at", { ascending: false });
+        .from("expected_participants").select("*")
+        .eq("form_id", forms.id).order("created_at", { ascending: false });
       setParticipants((data || []) as Participant[]);
     }
     setLoading(false);
@@ -57,35 +71,24 @@ export default function AdminTracker() {
   async function addParticipant(e: React.FormEvent) {
     e.preventDefault();
     if (!formId || !newName.trim() || !newEmail.trim()) return;
-
     const { error } = await supabase.from("expected_participants").insert({
-      form_id: formId,
-      full_name: newName.trim(),
-      email: newEmail.trim(),
-      phone: newPhone.trim() || null,
+      form_id: formId, full_name: newName.trim(), email: newEmail.trim(), phone: newPhone.trim() || null,
     });
-
-    if (error) {
-      toast.error("Failed to add participant");
-    } else {
+    if (error) { toast.error("Failed to add participant"); }
+    else {
       toast.success("Participant added!");
-      setNewName("");
-      setNewEmail("");
-      setNewPhone("");
-      setAddOpen(false);
-      fetchData();
+      setNewName(""); setNewEmail(""); setNewPhone(""); setAddOpen(false); fetchData();
     }
   }
 
   const completed = participants.filter((p) => p.status === "completed").length;
-  const pending = participants.filter((p) => p.status === "pending").length;
-  const total = participants.length;
-  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const pending   = participants.filter((p) => p.status === "pending").length;
+  const total     = participants.length;
+  const percent   = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   const filtered = participants.filter((p) => {
     const q = search.toLowerCase();
-    const matchesSearch =
-      p.full_name.toLowerCase().includes(q) || p.email.toLowerCase().includes(q);
+    const matchesSearch = p.full_name.toLowerCase().includes(q) || p.email.toLowerCase().includes(q);
     const matchesFilter = filter === "all" || p.status === filter;
     return matchesSearch && matchesFilter;
   });
@@ -99,51 +102,32 @@ export default function AdminTracker() {
   return (
     <div className="space-y-6 max-w-6xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-display font-bold text-gray-900">Waiver Tracker</h1>
+        <h1 className="text-2xl font-display font-bold" style={{ color: textPri }}>Waiver Tracker</h1>
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger asChild>
-            <Button style={{ background: "#68258C" }} className="text-white">
+            <Button className="text-white" style={{ background: "#68258C" }}>
               <UserPlus className="h-4 w-4 mr-1.5" />
               Add Participant
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-white border-gray-200 text-gray-900">
+          <DialogContent style={{ background: dialogBg, borderColor: dialogBdr }}>
             <DialogHeader>
-              <DialogTitle className="text-gray-900">Add Expected Participant</DialogTitle>
+              <DialogTitle style={{ color: textPri }}>Add Expected Participant</DialogTitle>
             </DialogHeader>
             <form onSubmit={addParticipant} className="space-y-4">
               <div className="space-y-1.5">
-                <Label className="text-gray-600">Full Name *</Label>
-                <Input
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  required
-                  className="bg-gray-50 border-gray-200 text-gray-900"
-                />
+                <Label style={{ color: textSec }}>Full Name *</Label>
+                <Input value={newName} onChange={(e) => setNewName(e.target.value)} required className={inputCls} />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-gray-600">Email *</Label>
-                <Input
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  required
-                  className="bg-gray-50 border-gray-200 text-gray-900"
-                />
+                <Label style={{ color: textSec }}>Email *</Label>
+                <Input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required className={inputCls} />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-gray-600">Phone</Label>
-                <Input
-                  value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
-                  className="bg-gray-50 border-gray-200 text-gray-900"
-                />
+                <Label style={{ color: textSec }}>Phone</Label>
+                <Input value={newPhone} onChange={(e) => setNewPhone(e.target.value)} className={inputCls} />
               </div>
-              <Button
-                type="submit"
-                className="w-full text-white"
-                style={{ background: "#68258C" }}
-              >
+              <Button type="submit" className="w-full text-white" style={{ background: "#68258C" }}>
                 Add Participant
               </Button>
             </form>
@@ -153,104 +137,67 @@ export default function AdminTracker() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div
-          className="rounded-xl p-5 flex items-center gap-4"
-          style={{ background: "#ffffff", border: "1px solid #e2e8f0" }}
-        >
-          <div
-            className="h-11 w-11 rounded-lg flex items-center justify-center"
-            style={{ background: "rgba(104,37,140,0.1)" }}
-          >
+        <div className="rounded-xl p-5 flex items-center gap-4" style={{ background: cardBg, border: cardBdr }}>
+          <div className="h-11 w-11 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(104,37,140,0.15)" }}>
             <Users className="h-5 w-5" style={{ color: "#68258C" }} />
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900">{total}</p>
-            <p className="text-xs text-gray-400">Total Expected</p>
+            <p className="text-2xl font-bold" style={{ color: textPri }}>{total}</p>
+            <p className="text-xs" style={{ color: textMuted }}>Total Expected</p>
           </div>
         </div>
-
-        <div
-          className="rounded-xl p-5 flex items-center gap-4"
-          style={{ background: "#ffffff", border: "1px solid #e2e8f0" }}
-        >
-          <div
-            className="h-11 w-11 rounded-lg flex items-center justify-center"
-            style={{ background: "rgba(15,169,88,0.1)" }}
-          >
+        <div className="rounded-xl p-5 flex items-center gap-4" style={{ background: cardBg, border: cardBdr }}>
+          <div className="h-11 w-11 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(15,169,88,0.15)" }}>
             <CheckCircle2 className="h-5 w-5" style={{ color: "#0FA958" }} />
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900">{completed}</p>
-            <p className="text-xs text-gray-400">Completed</p>
+            <p className="text-2xl font-bold" style={{ color: textPri }}>{completed}</p>
+            <p className="text-xs" style={{ color: textMuted }}>Completed</p>
           </div>
         </div>
-
-        <div
-          className="rounded-xl p-5 flex items-center gap-4"
-          style={{ background: "#ffffff", border: "1px solid #e2e8f0" }}
-        >
-          <div
-            className="h-11 w-11 rounded-lg flex items-center justify-center"
-            style={{ background: "rgba(239,68,68,0.08)" }}
-          >
+        <div className="rounded-xl p-5 flex items-center gap-4" style={{ background: cardBg, border: cardBdr }}>
+          <div className="h-11 w-11 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(239,68,68,0.12)" }}>
             <AlertCircle className="h-5 w-5 text-red-400" />
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900">{pending}</p>
-            <p className="text-xs text-gray-400">Missing</p>
+            <p className="text-2xl font-bold" style={{ color: textPri }}>{pending}</p>
+            <p className="text-xs" style={{ color: textMuted }}>Missing</p>
           </div>
         </div>
       </div>
 
       {/* Progress */}
-      <div
-        className="rounded-xl p-5"
-        style={{ background: "#ffffff", border: "1px solid #e2e8f0" }}
-      >
+      <div className="rounded-xl p-5" style={{ background: cardBg, border: cardBdr }}>
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-gray-600">Completion Progress</span>
-          <span className="text-sm font-bold" style={{ color: "#68258C" }}>{percent}%</span>
+          <span className="text-sm font-medium" style={{ color: textSec }}>Completion Progress</span>
+          <span className="text-sm font-bold" style={{ color: pctColor }}>{percent}%</span>
         </div>
-        <div className="h-3 rounded-full overflow-hidden" style={{ background: "#e2e8f0" }}>
-          <div
-            className="h-full rounded-full transition-all duration-500"
-            style={{
-              width: `${percent}%`,
-              background: "linear-gradient(90deg, #68258C, #F2B705)",
-            }}
-          />
+        <div className="h-3 rounded-full overflow-hidden" style={{ background: trackBg }}>
+          <div className="h-full rounded-full transition-all duration-500"
+            style={{ width: `${percent}%`, background: "linear-gradient(90deg, #68258C, #F2B705)" }} />
         </div>
       </div>
 
       {/* Table */}
-      <div
-        className="rounded-xl overflow-hidden"
-        style={{ background: "#ffffff", border: "1px solid #e2e8f0" }}
-      >
+      <div className="rounded-xl overflow-hidden" style={{ background: cardBg, border: cardBdr }}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-6 pb-4">
-          <h3 className="text-lg font-heading font-semibold text-gray-900">Participants</h3>
+          <h3 className="text-lg font-heading font-semibold" style={{ color: textPri }}>Participants</h3>
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <div className="relative flex-1 sm:w-56">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300" />
-              <Input
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-300"
-              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: textFaint }} />
+              <Input placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)}
+                className={`pl-9 ${inputCls}`} />
             </div>
             <div className="flex gap-1">
               {filterButtons.map((f) => (
-                <button
-                  key={f.key}
-                  onClick={() => setFilter(f.key)}
+                <button key={f.key} onClick={() => setFilter(f.key)}
                   className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-                  style={
-                    filter === f.key
-                      ? { background: "#68258C", color: "#fff" }
-                      : { background: "transparent", color: "rgba(0,0,0,0.4)" }
-                  }
-                >
+                  style={filter === f.key
+                    ? { background: "#68258C", color: "#fff" }
+                    : { background: "transparent", color: inactiveFilter }}>
                   {f.label}
                 </button>
               ))}
@@ -260,38 +207,37 @@ export default function AdminTracker() {
 
         <div className="px-6 pb-6">
           {loading ? (
-            <p className="text-sm text-gray-300">Loading...</p>
+            <p className="text-sm" style={{ color: textMuted }}>Loading...</p>
           ) : filtered.length === 0 ? (
-            <p className="text-sm text-gray-300 text-center py-8">
+            <p className="text-sm text-center py-8" style={{ color: textMuted }}>
               {total === 0 ? "No participants added yet. Click 'Add Participant' to start." : "No results found."}
             </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0" }}>
-                    <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider pb-3 pr-4">Name</th>
-                    <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider pb-3 pr-4">Email</th>
-                    <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider pb-3 pr-4">Phone</th>
-                    <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider pb-3 pr-4">Status</th>
-                    <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider pb-3">Added</th>
+                  <tr style={{ borderBottom: `1px solid ${thBdr}` }}>
+                    {["Name", "Email", "Phone", "Status", "Added"].map((h) => (
+                      <th key={h} className="text-left text-[11px] font-semibold uppercase tracking-wider pb-3 pr-4"
+                        style={{ color: textMuted }}>{h}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((p, i) => (
-                    <tr
-                      key={p.id}
-                      className="hover:bg-gray-50 transition-colors"
-                      style={{ borderBottom: i < filtered.length - 1 ? "1px solid #f1f5f9" : "none" }}
-                    >
+                    <tr key={p.id}
+                      style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${rowBdr}` : "none" }}
+                      className="transition-colors"
+                      onMouseEnter={(e) => (e.currentTarget.style.background = rowHover)}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
                       <td className="py-3 pr-4">
-                        <span className="text-sm font-medium text-gray-700">{p.full_name}</span>
+                        <span className="text-sm font-medium" style={{ color: textPri }}>{p.full_name}</span>
                       </td>
                       <td className="py-3 pr-4">
-                        <span className="text-sm text-gray-500">{p.email}</span>
+                        <span className="text-sm" style={{ color: textSec }}>{p.email}</span>
                       </td>
                       <td className="py-3 pr-4">
-                        <span className="text-sm text-gray-400">{p.phone || "—"}</span>
+                        <span className="text-sm" style={{ color: textMuted }}>{p.phone || "—"}</span>
                       </td>
                       <td className="py-3 pr-4">
                         {p.status === "completed" ? (
@@ -307,7 +253,7 @@ export default function AdminTracker() {
                         )}
                       </td>
                       <td className="py-3">
-                        <span className="text-[12px] text-gray-400">
+                        <span className="text-[12px]" style={{ color: textMuted }}>
                           {format(new Date(p.created_at), "MMM d, yyyy")}
                         </span>
                       </td>
