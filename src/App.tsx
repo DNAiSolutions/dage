@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PortalLayout from "@/components/portal/PortalLayout";
-import AdminLayout from "@/components/admin/AdminLayout";
 
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -22,9 +21,6 @@ import WaiverPublic from "./pages/WaiverPublic";
 import Dashboard from "./pages/portal/Dashboard";
 import Waivers from "./pages/portal/Waivers";
 import Tracker from "./pages/portal/Tracker";
-import AdminDashboard from "./pages/admin/Dashboard";
-import AdminWaivers from "./pages/admin/Waivers";
-import AdminTracker from "./pages/admin/Tracker";
 import NotFound from "./pages/NotFound";
 import ProjectChecklist from "./components/ProjectChecklist";
 
@@ -60,11 +56,6 @@ const App = () => (
             <Route path="/portal" element={<ProtectedRoute><PortalLayout><Dashboard /></PortalLayout></ProtectedRoute>} />
             <Route path="/portal/waivers" element={<ProtectedRoute><PortalLayout><Waivers /></PortalLayout></ProtectedRoute>} />
             <Route path="/portal/tracker" element={<ProtectedRoute><PortalLayout><Tracker /></PortalLayout></ProtectedRoute>} />
-
-            {/* Protected admin portal (white theme) */}
-            <Route path="/admin" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
-            <Route path="/admin/waivers" element={<ProtectedRoute><AdminLayout><AdminWaivers /></AdminLayout></ProtectedRoute>} />
-            <Route path="/admin/tracker" element={<ProtectedRoute><AdminLayout><AdminTracker /></AdminLayout></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
