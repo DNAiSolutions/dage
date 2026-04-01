@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table";
+import { Label } from "@/components/ui/label";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Search, UserPlus, CheckCircle2, Clock, Users, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
@@ -95,35 +90,62 @@ export default function Tracker() {
     return matchesSearch && matchesFilter;
   });
 
+  const filterButtons = [
+    { key: "all" as const, label: "All" },
+    { key: "completed" as const, label: "Completed" },
+    { key: "pending" as const, label: "Missing" },
+  ];
+
   return (
     <div className="space-y-6 max-w-6xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-display font-bold text-foreground">Waiver Tracker</h1>
+        <h1 className="text-2xl font-display font-bold text-white">Waiver Tracker</h1>
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button style={{ background: "#68258C" }} className="text-white">
               <UserPlus className="h-4 w-4 mr-1.5" />
               Add Participant
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="bg-[#1c1130] border-[#2a1a42] text-white">
             <DialogHeader>
-              <DialogTitle>Add Expected Participant</DialogTitle>
+              <DialogTitle className="text-white">Add Expected Participant</DialogTitle>
             </DialogHeader>
             <form onSubmit={addParticipant} className="space-y-4">
               <div className="space-y-1.5">
-                <Label>Full Name *</Label>
-                <Input value={newName} onChange={(e) => setNewName(e.target.value)} required />
+                <Label className="text-white/60">Full Name *</Label>
+                <Input
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  required
+                  className="bg-[#0d0714] border-[#2a1a42] text-white"
+                />
               </div>
               <div className="space-y-1.5">
-                <Label>Email *</Label>
-                <Input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required />
+                <Label className="text-white/60">Email *</Label>
+                <Input
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  required
+                  className="bg-[#0d0714] border-[#2a1a42] text-white"
+                />
               </div>
               <div className="space-y-1.5">
-                <Label>Phone</Label>
-                <Input value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
+                <Label className="text-white/60">Phone</Label>
+                <Input
+                  value={newPhone}
+                  onChange={(e) => setNewPhone(e.target.value)}
+                  className="bg-[#0d0714] border-[#2a1a42] text-white"
+                />
               </div>
-              <Button type="submit" className="w-full">Add Participant</Button>
+              <Button
+                type="submit"
+                className="w-full text-white"
+                style={{ background: "#68258C" }}
+              >
+                Add Participant
+              </Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -131,140 +153,174 @@ export default function Tracker() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="shadow-soft">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Users className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{total}</p>
-                <p className="text-xs text-muted-foreground">Total Expected</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div
+          className="rounded-xl p-5 flex items-center gap-4"
+          style={{ background: "#1c1130", border: "1px solid #2a1a42" }}
+        >
+          <div
+            className="h-11 w-11 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(104,37,140,0.15)" }}
+          >
+            <Users className="h-5 w-5" style={{ color: "#68258C" }} />
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">{total}</p>
+            <p className="text-xs text-white/40">Total Expected</p>
+          </div>
+        </div>
 
-        <Card className="shadow-soft">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-secondary/10 flex items-center justify-center">
-                <CheckCircle2 className="h-5 w-5 text-secondary" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{completed}</p>
-                <p className="text-xs text-muted-foreground">Completed</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div
+          className="rounded-xl p-5 flex items-center gap-4"
+          style={{ background: "#1c1130", border: "1px solid #2a1a42" }}
+        >
+          <div
+            className="h-11 w-11 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(15,169,88,0.12)" }}
+          >
+            <CheckCircle2 className="h-5 w-5" style={{ color: "#0FA958" }} />
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">{completed}</p>
+            <p className="text-xs text-white/40">Completed</p>
+          </div>
+        </div>
 
-        <Card className="shadow-soft">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-destructive/10 flex items-center justify-center">
-                <AlertCircle className="h-5 w-5 text-destructive" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{pending}</p>
-                <p className="text-xs text-muted-foreground">Missing</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div
+          className="rounded-xl p-5 flex items-center gap-4"
+          style={{ background: "#1c1130", border: "1px solid #2a1a42" }}
+        >
+          <div
+            className="h-11 w-11 rounded-lg flex items-center justify-center"
+            style={{ background: "rgba(239,68,68,0.1)" }}
+          >
+            <AlertCircle className="h-5 w-5 text-red-400" />
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">{pending}</p>
+            <p className="text-xs text-white/40">Missing</p>
+          </div>
+        </div>
       </div>
 
       {/* Progress */}
-      <Card className="shadow-soft">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Completion Progress</span>
-            <span className="text-sm font-bold text-primary">{percent}%</span>
-          </div>
-          <Progress value={percent} className="h-3" />
-        </CardContent>
-      </Card>
+      <div
+        className="rounded-xl p-5"
+        style={{ background: "#1c1130", border: "1px solid #2a1a42" }}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-sm font-medium text-white/70">Completion Progress</span>
+          <span className="text-sm font-bold" style={{ color: "#F2B705" }}>{percent}%</span>
+        </div>
+        <div className="h-3 rounded-full overflow-hidden" style={{ background: "#2a1a42" }}>
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: `${percent}%`,
+              background: "linear-gradient(90deg, #68258C, #F2B705)",
+            }}
+          />
+        </div>
+      </div>
 
       {/* Table */}
-      <Card className="shadow-soft">
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <CardTitle className="text-lg">Participants</CardTitle>
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-56">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
-              <div className="flex gap-1">
-                {(["all", "completed", "pending"] as const).map((f) => (
-                  <Button
-                    key={f}
-                    size="sm"
-                    variant={filter === f ? "default" : "outline"}
-                    onClick={() => setFilter(f)}
-                    className="text-xs capitalize"
-                  >
-                    {f === "pending" ? "Missing" : f}
-                  </Button>
-                ))}
-              </div>
+      <div
+        className="rounded-xl overflow-hidden"
+        style={{ background: "#1c1130", border: "1px solid #2a1a42" }}
+      >
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-6 pb-4">
+          <h3 className="text-lg font-heading font-semibold text-white">Participants</h3>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="relative flex-1 sm:w-56">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+              <Input
+                placeholder="Search..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9 bg-[#0d0714] border-[#2a1a42] text-white placeholder:text-white/20"
+              />
+            </div>
+            <div className="flex gap-1">
+              {filterButtons.map((f) => (
+                <button
+                  key={f.key}
+                  onClick={() => setFilter(f.key)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                  style={
+                    filter === f.key
+                      ? { background: "#68258C", color: "#fff" }
+                      : { background: "transparent", color: "rgba(255,255,255,0.4)" }
+                  }
+                >
+                  {f.label}
+                </button>
+              ))}
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
+        </div>
+
+        {/* Table Body */}
+        <div className="px-6 pb-6">
           {loading ? (
-            <p className="text-sm text-muted-foreground">Loading...</p>
+            <p className="text-sm text-white/30">Loading...</p>
           ) : filtered.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">
+            <p className="text-sm text-white/30 text-center py-8">
               {total === 0 ? "No participants added yet. Click 'Add Participant' to start." : "No results found."}
             </p>
           ) : (
             <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Added</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filtered.map((p) => (
-                    <TableRow key={p.id}>
-                      <TableCell className="font-medium">{p.full_name}</TableCell>
-                      <TableCell>{p.email}</TableCell>
-                      <TableCell>{p.phone || "—"}</TableCell>
-                      <TableCell>
+              <table className="w-full">
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #2a1a42" }}>
+                    <th className="text-left text-[11px] font-semibold text-white/30 uppercase tracking-wider pb-3 pr-4">Name</th>
+                    <th className="text-left text-[11px] font-semibold text-white/30 uppercase tracking-wider pb-3 pr-4">Email</th>
+                    <th className="text-left text-[11px] font-semibold text-white/30 uppercase tracking-wider pb-3 pr-4">Phone</th>
+                    <th className="text-left text-[11px] font-semibold text-white/30 uppercase tracking-wider pb-3 pr-4">Status</th>
+                    <th className="text-left text-[11px] font-semibold text-white/30 uppercase tracking-wider pb-3">Added</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((p, i) => (
+                    <tr
+                      key={p.id}
+                      className="hover:bg-white/[0.02] transition-colors"
+                      style={{ borderBottom: i < filtered.length - 1 ? "1px solid rgba(42,26,66,0.5)" : "none" }}
+                    >
+                      <td className="py-3 pr-4">
+                        <span className="text-sm font-medium text-white/80">{p.full_name}</span>
+                      </td>
+                      <td className="py-3 pr-4">
+                        <span className="text-sm text-white/50">{p.email}</span>
+                      </td>
+                      <td className="py-3 pr-4">
+                        <span className="text-sm text-white/40">{p.phone || "—"}</span>
+                      </td>
+                      <td className="py-3 pr-4">
                         {p.status === "completed" ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-medium text-secondary">
+                          <span className="inline-flex items-center gap-1 text-xs font-medium" style={{ color: "#0FA958" }}>
                             <CheckCircle2 className="h-3.5 w-3.5" />
                             Completed
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-medium text-destructive">
+                          <span className="inline-flex items-center gap-1 text-xs font-medium text-red-400">
                             <Clock className="h-3.5 w-3.5" />
                             Missing
                           </span>
                         )}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {format(new Date(p.created_at), "MMM d, yyyy")}
-                      </TableCell>
-                    </TableRow>
+                      </td>
+                      <td className="py-3">
+                        <span className="text-[12px] text-white/30">
+                          {format(new Date(p.created_at), "MMM d, yyyy")}
+                        </span>
+                      </td>
+                    </tr>
                   ))}
-                </TableBody>
-              </Table>
+                </tbody>
+              </table>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
