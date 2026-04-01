@@ -56,6 +56,11 @@ const App = () => (
             {/* Public waiver form */}
             <Route path="/waiver/:formId" element={<WaiverPublic />} />
 
+            {/* Protected portal (dark theme) */}
+            <Route path="/portal" element={<ProtectedRoute><PortalLayout><Dashboard /></PortalLayout></ProtectedRoute>} />
+            <Route path="/portal/waivers" element={<ProtectedRoute><PortalLayout><Waivers /></PortalLayout></ProtectedRoute>} />
+            <Route path="/portal/tracker" element={<ProtectedRoute><PortalLayout><Tracker /></PortalLayout></ProtectedRoute>} />
+
             {/* Protected admin portal (white theme) */}
             <Route path="/admin" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
             <Route path="/admin/waivers" element={<ProtectedRoute><AdminLayout><AdminWaivers /></AdminLayout></ProtectedRoute>} />
