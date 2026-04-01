@@ -63,7 +63,7 @@ export function PortalSidebar() {
               src={dageLogo}
               alt="D.A.G.E."
               className="h-9 w-9 rounded-full object-cover ring-2"
-              style={{ ringColor: "#68258C" }}
+              style={{ "--tw-ring-color": "#68258C" } as React.CSSProperties}
             />
             <div>
               <h2
