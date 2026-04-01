@@ -6,6 +6,7 @@ import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import dageLogo from "@/assets/dage-logo.png";
+import type { AdminTheme } from "./AdminLayout";
 import {
   Sidebar,
   SidebarContent,
@@ -35,11 +36,23 @@ const lockedItems = [
   { title: "Swimming", icon: Waves },
 ];
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+  theme?: AdminTheme;
+}
+
+export function AdminSidebar({ theme = "light" }: AdminSidebarProps) {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const isDark = theme === "dark";
+
+  const sidebarBg = isDark ? "#1a1a1a" : "#ffffff";
+  const borderColor = isDark ? "#2a2a2a" : "#e2e8f0";
+  const textMuted = isDark ? "#64748b" : "rgba(0,0,0,0.35)";
+  const navText = isDark ? "#94a3b8" : "#6b7280";
+  const navHover = isDark ? "hover:!text-white hover:!bg-white/10" : "hover:text-gray-900 hover:bg-gray-100";
+  const footerText = isDark ? "#64748b" : "#9ca3af";
 
   const handleSignOut = async () => {
     await signOut();
@@ -50,11 +63,11 @@ export function AdminSidebar() {
     <Sidebar
       collapsible="icon"
       className="border-r"
-      style={{ background: "#ffffff", borderColor: "#e2e8f0" }}
+      style={{ background: sidebarBg, borderColor, transition: "background 0.2s" }}
     >
       <SidebarHeader
         className="px-4 py-5"
-        style={{ borderBottom: "1px solid #e2e8f0" }}
+        style={{ borderBottom: `1px solid ${borderColor}` }}
       >
         {!collapsed ? (
           <div className="flex items-center gap-2.5">
@@ -71,7 +84,7 @@ export function AdminSidebar() {
               >
                 D.A.G.E.
               </h2>
-              <p className="text-[10px] text-gray-400 tracking-wider uppercase">
+              <p className="text-[10px] tracking-wider uppercase" style={{ color: textMuted }}>
                 Admin Portal
               </p>
             </div>
@@ -87,11 +100,11 @@ export function AdminSidebar() {
         )}
       </SidebarHeader>
 
-      <SidebarContent style={{ background: "#ffffff" }}>
+      <SidebarContent style={{ background: sidebarBg }}>
         <SidebarGroup>
           <SidebarGroupLabel
             className="text-[10px] tracking-widest uppercase"
-            style={{ color: "rgba(0,0,0,0.35)" }}
+            style={{ color: textMuted }}
           >
             Navigation
           </SidebarGroupLabel>
@@ -103,7 +116,8 @@ export function AdminSidebar() {
                     <NavLink
                       to={item.url}
                       end={item.url === "/admin"}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-500 transition-colors hover:text-gray-900 hover:bg-gray-100"
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${navHover}`}
+                      style={{ color: navText }}
                       activeClassName="!text-[#68258C] !bg-[#68258C]/10 font-medium"
                     >
                       <item.icon className="h-4 w-4" />
@@ -120,7 +134,7 @@ export function AdminSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel
               className="text-[10px] tracking-widest uppercase"
-              style={{ color: "rgba(0,0,0,0.3)" }}
+              style={{ color: textMuted }}
             >
               Coming Soon
             </SidebarGroupLabel>
@@ -128,7 +142,10 @@ export function AdminSidebar() {
               <SidebarMenu>
                 {lockedItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm cursor-default text-gray-300">
+                    <div
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm cursor-default"
+                      style={{ color: isDark ? "#374151" : "#d1d5db" }}
+                    >
                       <item.icon className="h-4 w-4" />
                       <span className="flex-1">{item.title}</span>
                       <Lock className="h-3 w-3" />
@@ -143,13 +160,14 @@ export function AdminSidebar() {
 
       <SidebarFooter
         className="space-y-1 pb-4"
-        style={{ borderTop: "1px solid #e2e8f0", background: "#ffffff" }}
+        style={{ borderTop: `1px solid ${borderColor}`, background: sidebarBg }}
       >
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={() => window.open("/", "_blank")}
-              className="text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+              style={{ color: footerText }}
+              className="hover:text-gray-600 hover:bg-gray-100"
             >
               <ExternalLink className="h-4 w-4" />
               {!collapsed && <span className="text-sm">View Site</span>}
@@ -158,7 +176,8 @@ export function AdminSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleSignOut}
-              className="text-gray-400 hover:text-red-500 hover:bg-red-50"
+              style={{ color: footerText }}
+              className="hover:text-red-500 hover:bg-red-50"
             >
               <LogOut className="h-4 w-4" />
               {!collapsed && <span className="text-sm">Sign Out</span>}
