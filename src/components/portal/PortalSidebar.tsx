@@ -21,9 +21,9 @@ import {
 } from "@/components/ui/sidebar";
 
 const navItems = [
-  { title: "Dashboard", url: "/portal", icon: LayoutDashboard },
-  { title: "Waivers", url: "/portal/waivers", icon: FileText },
-  { title: "Tracker", url: "/portal/tracker", icon: BarChart3 },
+  { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+  { title: "Waivers", url: "/admin/waivers", icon: FileText },
+  { title: "Tracker", url: "/admin/tracker", icon: BarChart3 },
 ];
 
 const lockedItems = [
@@ -104,7 +104,7 @@ export function PortalSidebar() {
                   <SidebarMenuButton asChild>
                     <NavLink
                       to={item.url}
-                      end={item.url === "/portal"}
+                      end={item.url === "/admin"}
                       className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 transition-colors hover:text-white hover:bg-white/5"
                       activeClassName="!text-[#F2B705] !bg-[#F2B705]/10 font-medium"
                     >

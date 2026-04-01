@@ -52,10 +52,10 @@ const App = () => (
             {/* Public waiver form */}
             <Route path="/waiver/:formId" element={<WaiverPublic />} />
 
-            {/* Protected portal */}
-            <Route path="/portal" element={<ProtectedRoute><PortalLayout><Dashboard /></PortalLayout></ProtectedRoute>} />
-            <Route path="/portal/waivers" element={<ProtectedRoute><PortalLayout><Waivers /></PortalLayout></ProtectedRoute>} />
-            <Route path="/portal/tracker" element={<ProtectedRoute><PortalLayout><Tracker /></PortalLayout></ProtectedRoute>} />
+            {/* Protected admin portal */}
+            <Route path="/admin" element={<ProtectedRoute><PortalLayout><Dashboard /></PortalLayout></ProtectedRoute>} />
+            <Route path="/admin/waivers" element={<ProtectedRoute><PortalLayout><Waivers /></PortalLayout></ProtectedRoute>} />
+            <Route path="/admin/tracker" element={<ProtectedRoute><PortalLayout><Tracker /></PortalLayout></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
