@@ -19,18 +19,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Set up auth listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          const { data } = await supabase
-            .from("profiles")
-            .select("full_name, email, role")
-            .eq("user_id", session.user.id)
-            .single();
-          setProfile(data);
+          // Use setTimeout to avoid blocking the callback
+          setTimeout(async () => {
+            const { data } = await supabase
+              .from("profiles")
+              .select("full_name, email, role")
+              .eq("user_id", session.user.id)
+              .single();
+            setProfile(data);
+          }, 0);
         } else {
           setProfile(null);
         }
@@ -38,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
+    // Then check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
