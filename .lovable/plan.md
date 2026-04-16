@@ -1,27 +1,51 @@
 
 
-## Two Changes
+## Redesign Admin Dashboard to Match Reference Layout
 
-### 1. Move Checklist to Bottom-Right Chat Bubble
+Restructure the dashboard to follow the clean, card-based layout from the reference image, adapted for D.A.G.E.'s data.
 
-Reposition the floating toggle button from `top-4 right-4` to `bottom-6 right-6` so it sits like a chat bubble. The panel will pop up from the bottom-right instead of sliding from the top-right.
+### Layout Changes (Dashboard.tsx only)
 
-**File:** `src/components/ProjectChecklist.tsx`
-- Change button position to `fixed bottom-6 right-6`
-- Make the button circular (round shape, larger)
-- Panel opens upward from bottom-right (anchored to bottom, max-height ~80vh)
-- Keep the glow animation
+**1. Stats Row — 4 cards across (instead of 3)**
+Cards with label + count on left, colored icon on right. Add a 4th stat: "Waiver Forms" (count of active forms).
 
-### 2. Add Login/Portal Link to Navbar
+```text
+┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+│ Expected      📍│ │ Completed     ✅│ │ Missing       ⚠️│ │ Waiver Forms  📄│
+│ Riders        │ │ Waivers       │ │ Waivers       │ │              │
+│ 0             │ │ 0             │ │ 0             │ │ 0            │
+└──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
+```
 
-Add a small "Portal" or login link in the navbar so you can access `/auth` to log into the backend.
+Each card: label top-left, large number bottom-left, colored icon circle top-right. Clean white card with subtle border. Matches the reference exactly.
 
-**File:** `src/components/Navbar.tsx`
-- Add a "Portal" link next to the Donate button (desktop: icon + text, mobile: in menu)
-- Links to `/auth` route which already exists
+**2. Two-column section below stats**
+
+Left card: **MVP Progress** — a checklist of project milestones with check/circle icons:
+- Homepage & Public Site (done)
+- Online Waiver System (done)
+- Admin Dashboard (done)
+- Parade Applications (pending)
+- Volunteer Forms (pending)
+- Scholarship Portal (pending)
+
+Right card: **Quick Notes** — status cards showing:
+- "Portal Live" with green dot — "Admin portal is now accessible to team members"
+- "Next Step" with gold dot — "Launch waiver form and begin collecting submissions"
+
+**3. Remove existing sections**
+- Remove the progress bar (redundant with stats)
+- Remove the Waiver Management CTA card (already in sidebar nav)
+- Remove the Recent Submissions card (moved to Waivers page)
+- Remove the Coming Soon grid (already in sidebar)
+
+### Sidebar + Layout — No changes
+Keep AdminSidebar and AdminLayout exactly as they are. The sidebar already has the "Coming Soon" locked items and footer links matching the reference pattern.
 
 ### Technical Details
-- No new dependencies
-- No database changes
-- Two file edits total
+- Single file edit: `src/pages/admin/Dashboard.tsx`
+- Add one more query to fetch `waiver_forms` count
+- MVP Progress items are static (hardcoded milestone list)
+- Quick Notes are static for now
+- All theme tokens (dark/light) preserved
 
