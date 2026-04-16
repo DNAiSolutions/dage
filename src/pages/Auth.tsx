@@ -21,7 +21,7 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user) navigate("/portal", { replace: true });
+    if (user) navigate("/admin", { replace: true });
   }, [user, navigate]);
 
   const handleEmailAuth = async (e: React.FormEvent) => {
@@ -43,7 +43,7 @@ export default function Auth() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate("/portal");
+        navigate("/admin");
       }
     } catch (err: any) {
       toast.error(err.message || "Authentication failed");
