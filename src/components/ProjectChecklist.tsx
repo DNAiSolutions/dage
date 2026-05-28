@@ -257,7 +257,7 @@ export default function ProjectChecklist() {
       {/* Floating Chat Bubble Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-[9999] flex items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
+        className={`fixed bottom-6 left-6 z-[9999] flex items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${
           !isOpen ? "animate-checklist-glow" : ""
         }`}
         style={{
@@ -282,9 +282,9 @@ export default function ProjectChecklist() {
         )}
       </button>
 
-      {/* Pop-up Panel from Bottom Right */}
+      {/* Pop-up Panel from Bottom Left */}
       <div
-        className={`fixed bottom-20 right-6 z-[9998] transition-all duration-300 ease-in-out origin-bottom-right ${
+        className={`fixed bottom-20 left-6 z-[9998] transition-all duration-300 ease-in-out origin-bottom-left ${
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         }`}
         style={{ width: "400px", maxWidth: "90vw", maxHeight: "80vh" }}
